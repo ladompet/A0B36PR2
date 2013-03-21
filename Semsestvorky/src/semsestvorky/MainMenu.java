@@ -4,7 +4,8 @@
  */
 package semsestvorky;
 
-import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.event.*;
 import javax.swing.*;
 
@@ -22,12 +23,13 @@ class Closer extends WindowAdapter {
 
 public class MainMenu extends JFrame {
 
+    public static int m;
+    public static int n;
     JButton[][] pole;
     Field field;
 
 //    void menu() {
 //    }
-
     class Exit implements ActionListener {
 
         @Override
@@ -38,6 +40,7 @@ public class MainMenu extends JFrame {
 
     MainMenu() {
         super.setTitle("Sestvorky");
+        this.setBounds(350, 0, 0, 0);
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
@@ -48,7 +51,7 @@ public class MainMenu extends JFrame {
         this.setJMenuBar(menu);
         JMenu file = new JMenu("File", true);
         menu.add(file);
-        JMenuItem newGame = new JMenuItem("New Game");
+        JMenuItem newGame = new JMenuItem("New Game    ");
         JMenuItem settings = new JMenuItem("Settings");
         JMenuItem exit = new JMenuItem("Exit");
         file.add(newGame);
@@ -75,16 +78,97 @@ public class MainMenu extends JFrame {
 
         @Override
         public void actionPerformed(ActionEvent e) {
+            
         }
     }
-    
+
     class Nastavenia extends JDialog implements ActionListener {
+
+        JTextField width, height;
+        JLabel w1,h1, max;
+        JButton ok, cancel;
+        int m, n;
+
+        Nastavenia() {
+            addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowClosing(WindowEvent we) {
+                    we.getWindow().dispose();
+                }
+            });
+            this.setTitle("Settings");
+            this.setLayout(null);
+            this.setLocation(550, 200);
+            this.setSize(280, 150);
+            this.setResizable(false);
+
+            w1 = new JLabel("Width");
+            h1 = new JLabel("Height");
+            max = new JLabel("(6-19)");
+            
+            width = new JTextField();
+            width.setEditable(false);
+            height = new JTextField();
+            height.setEditable(false);
+
+            cancel = new JButton("Cancel");
+            ok = new JButton("OK");
+
+            this.add(w1);
+            w1.setBounds(78, 17, 50, 20);
+            this.add(h1);
+            h1.setBounds(158, 17, 50, 20);
+            this.add(max);
+            max.setBounds(205, 35, 50, 20);
+            
+            this.add(width);
+            width.setBounds(70, 35, 50, 20);
+            this.add(height);
+            height.setBounds(150, 35, 50, 20);
+
+            this.add(ok);
+            ok.setBounds(140, 70, 75, 25);
+            this.add(cancel);
+            cancel.setBounds(60, 70, 75, 25);
+
+            ok.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent ae) {
+                    try{
+                        n=Integer.parseInt(width.getText());
+                        m=Integer.parseInt(height.getText());
+                        dispose();
+                    }catch (Exception any){
+                        width.setText("");
+                        height.setText("");
+                        n=6;
+                        m=6;
+                    }
+                    new NovaHra().actionPerformed(ae);
+                    Nastavenia.this.dispose();
+                }
+            });
+            cancel.addActionListener(new ActionListener(){
+
+                @Override
+                public void actionPerformed(ActionEvent ae) {
+                    Nastavenia.this.dispose();
+                }
+            });
+        }
 
         @Override
         public void actionPerformed(ActionEvent e) {
+            new Nastavenia().setVisible(true);
         }
     }
-//    public static void main(String[] args) {
-//        new MainMenu().setVisible(true);
-//    }
+
+        public int getN() {
+            return n;
+        }
+
+        public int getM() {
+            return m;
+        }
+
 }
