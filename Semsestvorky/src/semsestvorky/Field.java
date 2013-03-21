@@ -4,7 +4,10 @@
  */
 package semsestvorky;
 
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import javax.swing.*;
+
 
 /**
  *
@@ -29,7 +32,7 @@ public class Field extends JPanel {
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < m; j++) {
                 pole[i][j] = new JButton(ic8);
-                //pole[i][j].addMouseListener(new ML(i,j));
+                pole[i][j].addMouseListener(new MouseL(i,j));
                 int x = 35;
                 pole[i][j].setBounds(x * i, x * j, x, x);
                 this.add(pole[i][j]);
@@ -37,5 +40,19 @@ public class Field extends JPanel {
             }
         }
     }
+    private class MouseL extends MouseAdapter{
+        
+               int x, y;
 
+        MouseL(int x, int y) {
+            this.x = x;
+            this.y = y;
+        }  
+        
+   
+      @Override
+          public void mouseClicked(MouseEvent me) {
+      }    
+        
+    }
 }
