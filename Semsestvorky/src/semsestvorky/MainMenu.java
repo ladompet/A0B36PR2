@@ -49,12 +49,16 @@ public class MainMenu extends JFrame {
         JMenu file = new JMenu("File", true);
         menu.add(file);
         JMenuItem newGame = new JMenuItem("New Game");
+        JMenuItem settings = new JMenuItem("Settings");
         JMenuItem exit = new JMenuItem("Exit");
         file.add(newGame);
+        file.addSeparator();
+        file.add(settings);
         file.addSeparator();
         file.add(exit);
 
         newGame.addActionListener(new NovaHra());
+        settings.addActionListener(new Nastavenia());
         exit.addActionListener(new Exit());
         //this.setLayout(null);
         this.setResizable(false);
@@ -62,12 +66,19 @@ public class MainMenu extends JFrame {
         int m = n;
         field = new Field(n, m);
         this.add(field);
-        int x = 30;
+        int x = 35;
         this.setSize(x * (n + 1) - 24, x * (m + 1) + 22);
 
     }
 
     class NovaHra extends JDialog implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+        }
+    }
+    
+    class Nastavenia extends JDialog implements ActionListener {
 
         @Override
         public void actionPerformed(ActionEvent e) {
