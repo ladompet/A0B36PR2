@@ -59,7 +59,7 @@ public class MainMenu extends JFrame {
         this.setResizable(false);
         field = new Field(n, m);
         this.add(field);
-        this.setSize(x * (n + 1) - 24, x * (m + 1) + 22);
+        this.setSize(x * (n + 1) - 29, x * (m + 1) + 17);
 
     }
 
@@ -78,7 +78,7 @@ public class MainMenu extends JFrame {
             MainMenu.this.setVisible(false);
             MainMenu.this.remove(field);
             MainMenu.this.add(field = new Field(a, b));
-            MainMenu.this.setSize(x * (a + 1) - 24, x * (b + 1) + 22);
+            MainMenu.this.setSize(x * (a + 1) - 29, x * (b + 1) + 17);
             MainMenu.this.setVisible(true);
 
         }
