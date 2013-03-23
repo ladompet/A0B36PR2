@@ -21,6 +21,8 @@ class Closer extends WindowAdapter {
 
 public class MainMenu extends JFrame {
 
+    boolean hra = true;
+    int farba = 0;
     public static int m = 10;
     public static int n = 10;
     public static int a = 10;
@@ -57,7 +59,7 @@ public class MainMenu extends JFrame {
         exit.addActionListener(new Exit());
         //this.setLayout(null);
         this.setResizable(false);
-        field = new Field(n, m);
+        field = new Field(n, m, hra, farba);
         this.add(field);
         this.setSize(x * (n + 1) - 29, x * (m + 1) + 17);
 
@@ -75,19 +77,27 @@ public class MainMenu extends JFrame {
 
         @Override
         public void actionPerformed(ActionEvent e) {
+            if (hra == true) {
+                MainMenu.super.setTitle("Connect6");
+            } else {
+                MainMenu.super.setTitle("Tic Tac Toe");
+            }
             MainMenu.this.setVisible(false);
             MainMenu.this.remove(field);
-            MainMenu.this.add(field = new Field(a, b));
+            MainMenu.this.add(field = new Field(a, b, hra, farba));
             MainMenu.this.setSize(x * (a + 1) - 29, x * (b + 1) + 17);
             MainMenu.this.setVisible(true);
 
         }
     }
 
-    class Nastavenia extends JDialog implements ActionListener {
+    class Nastavenia extends JDialog implements ActionListener, ItemListener {
 
         JTextField width, height;
-        JLabel w1, h1, max;
+        JLabel w1, h1, max, size, game, color;
+        JCheckBox c6, ttt, blue, green, grey;
+        ButtonGroup CB1;
+        ButtonGroup CB2;
         JButton ok, cancel;
         int m, n;
 
@@ -101,40 +111,74 @@ public class MainMenu extends JFrame {
             this.setTitle("Settings");
             this.setLayout(null);
             this.setLocation(550, 200);
-            this.setSize(280, 150);
+            this.setSize(280, 240);
             this.setResizable(false);
+            CB1 = new ButtonGroup();
+            CB2 = new ButtonGroup();
 
             w1 = new JLabel("Width");
             h1 = new JLabel("Height");
             max = new JLabel("(6-19)");
+            size = new JLabel("Size of Field:");
+            game = new JLabel("Game Mod:");
+            color = new JLabel("Select a color:");
 
             width = new JTextField();
-            width.setEditable(false);
             height = new JTextField();
-            height.setEditable(false);
+
+            c6 = new JCheckBox("Connect 6", true);
+            ttt = new JCheckBox("Tic Tac Toe", false);
+            blue = new JCheckBox("Blue", true);
+            green = new JCheckBox("Green", false);
+            grey = new JCheckBox("Grey", false);
+
+            CB1.add(c6);
+            CB1.add(ttt);
+            CB2.add(blue);
+            CB2.add(green);
+            CB2.add(grey);
 
             cancel = new JButton("Cancel");
             ok = new JButton("OK");
 
             this.add(w1);
-            w1.setBounds(78, 17, 50, 20);
+            w1.setBounds(72, 27, 50, 20);
             this.add(h1);
-            h1.setBounds(158, 17, 50, 20);
+            h1.setBounds(151, 27, 50, 20);
             this.add(max);
-            max.setBounds(205, 35, 50, 20);
+            max.setBounds(202, 45, 50, 20);
+            this.add(size);
+            size.setBounds(98, 10, 100, 20);
+            this.add(game);
+            game.setBounds(100, 75, 100, 20);
+            this.add(color);
+            color.setBounds(100, 120, 100, 20);
 
             this.add(width);
-            width.setBounds(70, 35, 50, 20);
+            width.setBounds(65, 48, 50, 20);
             this.add(height);
-            height.setBounds(150, 35, 50, 20);
+            height.setBounds(145, 48, 50, 20);
+
+            this.add(c6);
+            c6.setBounds(40, 95, 100, 20);
+            this.add(ttt);
+            ttt.setBounds(140, 95, 100, 20);
+            this.add(blue);
+            blue.setBounds(30, 140, 70, 20);
+            this.add(green);
+            green.setBounds(110, 140, 70, 20);
+            this.add(grey);
+            grey.setBounds(190, 140, 70, 20);
 
             width.setEditable(true);
             height.setEditable(true);
+            width.setText("10");
+            height.setText("10");
 
             this.add(ok);
-            ok.setBounds(140, 70, 75, 25);
+            ok.setBounds(157, 175, 75, 25);
             this.add(cancel);
-            cancel.setBounds(60, 70, 75, 25);
+            cancel.setBounds(47, 175, 75, 25);
 
             ok.addActionListener(new ActionListener() {
                 @Override
@@ -145,13 +189,13 @@ public class MainMenu extends JFrame {
                         dispose();
                     } catch (Exception any) {
                     }
-                    if (n < 6 ) {
+                    if (n < 6) {
                         n = 6;
                     }
                     if (n > 19) {
                         n = 19;
                     }
-                    if (m < 6 ) {
+                    if (m < 6) {
                         m = 6;
                     }
                     if (m > 19) {
@@ -166,15 +210,36 @@ public class MainMenu extends JFrame {
             cancel.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent ae) {
+
                     Nastavenia.this.dispose();
                 }
             });
-
+            c6.addItemListener(this);
+            ttt.addItemListener(this);
+            blue.addItemListener(this);
+            green.addItemListener(this);
+            grey.addItemListener(this);
         }
 
         @Override
         public void actionPerformed(ActionEvent e) {
             new Nastavenia().setVisible(true);
+        }
+
+        @Override
+        public void itemStateChanged(ItemEvent e) {
+            if (c6.isSelected()) {
+                hra = true;
+            } else {
+                hra = false;
+            }
+            if (blue.isSelected()) {
+                farba = 0;
+            } else if (green.isSelected()) {
+                farba = 1;
+            } else if (grey.isSelected()) {
+                farba = 2;
+            }
         }
     }
 }

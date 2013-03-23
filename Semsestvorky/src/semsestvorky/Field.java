@@ -4,8 +4,6 @@
  */
 package semsestvorky;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.*;
@@ -16,6 +14,9 @@ import javax.swing.*;
  */
 public class Field extends JPanel {
 
+    boolean hra;
+    int farba;
+    int pocet;
     int pocetprvy = 0;
     int pocetdruhy = 0;
     boolean vyherca;
@@ -23,16 +24,51 @@ public class Field extends JPanel {
     int ii = 0;
     Win win;
     JButton[][] pole;
-    ImageIcon ic1 = new ImageIcon("obrazky/o1.jpg");
-    ImageIcon ic2 = new ImageIcon("obrazky/o1s.jpg");
-    ImageIcon ic3 = new ImageIcon("obrazky/o1w.jpg");
-    ImageIcon ic4 = new ImageIcon("obrazky/x1.jpg");
-    ImageIcon ic5 = new ImageIcon("obrazky/x1s.jpg");
-    ImageIcon ic6 = new ImageIcon("obrazky/x1w.jpg");
-    ImageIcon ic7 = new ImageIcon("obrazky/stlacene.jpg");
-    ImageIcon ic8 = new ImageIcon("obrazky/tlacidlo.jpg");
+    ImageIcon ic1 = new ImageIcon();
+    ImageIcon ic2 = new ImageIcon();
+    ImageIcon ic3 = new ImageIcon();
+    ImageIcon ic4 = new ImageIcon();
+    ImageIcon ic5 = new ImageIcon();
+    ImageIcon ic6 = new ImageIcon();
+    ImageIcon ic7 = new ImageIcon();
+    ImageIcon ic8 = new ImageIcon();
 
-    Field(int n, int m) {
+    Field(int n, int m, boolean a, int b) {
+        hra = a;
+        if (hra ==true) {
+            pocet =2;
+        }else if (hra ==false) {
+            pocet =1;
+        }
+        farba = b;
+        if (farba == 0) {
+            ic1 = new ImageIcon("obrazky/blue/o1.jpg");
+            ic2 = new ImageIcon("obrazky/blue/o1s.jpg");
+            ic3 = new ImageIcon("obrazky/blue/o1w.jpg");
+            ic4 = new ImageIcon("obrazky/blue/x1.jpg");
+            ic5 = new ImageIcon("obrazky/blue/x1s.jpg");
+            ic6 = new ImageIcon("obrazky/blue/x1w.jpg");
+            ic7 = new ImageIcon("obrazky/blue/stlacene.jpg");
+            ic8 = new ImageIcon("obrazky/blue/tlacidlo.jpg");
+        } else if (farba == 1) {
+            ic1 = new ImageIcon("obrazky/green/o1.jpg");
+            ic2 = new ImageIcon("obrazky/green/o1s.jpg");
+            ic3 = new ImageIcon("obrazky/green/o1w.jpg");
+            ic4 = new ImageIcon("obrazky/green/x1.jpg");
+            ic5 = new ImageIcon("obrazky/green/x1s.jpg");
+            ic6 = new ImageIcon("obrazky/green/x1w.jpg");
+            ic7 = new ImageIcon("obrazky/green/stlacene.jpg");
+            ic8 = new ImageIcon("obrazky/green/tlacidlo.jpg");
+        }else if (farba == 2) {
+            ic1 = new ImageIcon("obrazky/grey/o1.jpg");
+            ic2 = new ImageIcon("obrazky/grey/o1s.jpg");
+            ic3 = new ImageIcon("obrazky/grey/o1w.jpg");
+            ic4 = new ImageIcon("obrazky/grey/x1.jpg");
+            ic5 = new ImageIcon("obrazky/grey/x1s.jpg");
+            ic6 = new ImageIcon("obrazky/grey/x1w.jpg");
+            ic7 = new ImageIcon("obrazky/grey/stlacene.jpg");
+            ic8 = new ImageIcon("obrazky/grey/tlacidlo.jpg");
+        }
         this.setLayout(null);
         pole = new JButton[n][m];
         for (int i = 0; i < n; i++) {
@@ -63,7 +99,7 @@ public class Field extends JPanel {
         public void mousePressed(MouseEvent me) {
             if (pole[x][y].getIcon() == ic8) {
                 ii++;
-                if (ii == 2) {
+                if (ii == pocet) {
                     if (prvy == true) {
                         prvy = false;
                     } else if (prvy == false) {
@@ -111,7 +147,7 @@ public class Field extends JPanel {
 
         for (int i = 0; i <= pole.length - 6; i++) {
             for (int j = 0; j <= pole[i].length - 6; j++) {
-                if (pole[i][j].getIcon() != ic8
+                if (pole[i][j].getIcon() != ic8 && pole[i][j].getIcon() != ic3 && pole[i][j].getIcon() != ic6
                         && pole[i][j].getIcon() == pole[i + 1][j + 1].getIcon()
                         && pole[i][j].getIcon() == pole[i + 2][j + 2].getIcon()
                         && pole[i][j].getIcon() == pole[i + 3][j + 3].getIcon()
@@ -123,16 +159,15 @@ public class Field extends JPanel {
                         }
                         JLabel vyhra = new JLabel("1. player - You're better!");
                         pocetprvy++;
-                        win = new Win(vyhra, pocetprvy, pocetdruhy);
+                        win = new Win(vyhra, pocetprvy, pocetdruhy,farba);
                         win.setVisible(true);
                     } else {
-                        vyherca = false;
                         for (int k = 0; k < 6; k++) {
                             pole[i + k][j + k].setIcon(ic3);
                         }
                         JLabel vyhra = new JLabel("2. player - You're better!");
                         pocetdruhy++;
-                        win = new Win(vyhra, pocetprvy, pocetdruhy);
+                        win = new Win(vyhra, pocetprvy, pocetdruhy,farba);
                         win.setVisible(true);
                     }
                 }
@@ -140,29 +175,27 @@ public class Field extends JPanel {
         }
         for (int i = pole.length - 1; i > 5; i--) {
             for (int j = 0; j <= pole[i].length - 6; j++) {
-                if (pole[i][j].getIcon() != ic8
+                if (pole[i][j].getIcon() != ic8 && pole[i][j].getIcon() != ic3 && pole[i][j].getIcon() != ic6
                         && pole[i][j].getIcon() == pole[i - 1][j + 1].getIcon()
                         && pole[i][j].getIcon() == pole[i - 2][j + 2].getIcon()
                         && pole[i][j].getIcon() == pole[i - 3][j + 3].getIcon()
                         && pole[i][j].getIcon() == pole[i - 4][j + 4].getIcon()
                         && pole[i][j].getIcon() == pole[i - 5][j + 5].getIcon()) {
                     if (prvy) {
-                        vyherca = true;
                         for (int k = 0; k < 6; k++) {
                             pole[i - k][j + k].setIcon(ic6);
                         }
                         JLabel vyhra = new JLabel("1. player - You're better!");
                         pocetprvy++;
-                        win = new Win(vyhra, pocetprvy, pocetdruhy);
+                        win = new Win(vyhra, pocetprvy, pocetdruhy,farba);
                         win.setVisible(true);
                     } else {
-                        vyherca = false;
                         for (int k = 0; k < 6; k++) {
                             pole[i - k][j + k].setIcon(ic3);
                         }
                         JLabel vyhra = new JLabel("2. player - You're better!");
                         pocetdruhy++;
-                        win = new Win(vyhra, pocetprvy, pocetdruhy);
+                        win = new Win(vyhra, pocetprvy, pocetdruhy,farba);
                         win.setVisible(true);
                     }
                 }
@@ -170,29 +203,27 @@ public class Field extends JPanel {
         }
         for (int i = 0; i <= pole.length - 6; i++) {
             for (int j = 0; j < pole[i].length; j++) {
-                if (pole[i][j].getIcon() != ic8
+                if (pole[i][j].getIcon() != ic8 && pole[i][j].getIcon() != ic3 && pole[i][j].getIcon() != ic6
                         && pole[i][j].getIcon() == pole[i + 1][j].getIcon()
                         && pole[i][j].getIcon() == pole[i + 2][j].getIcon()
                         && pole[i][j].getIcon() == pole[i + 3][j].getIcon()
                         && pole[i][j].getIcon() == pole[i + 4][j].getIcon()
                         && pole[i][j].getIcon() == pole[i + 5][j].getIcon()) {
                     if (prvy) {
-                        vyherca = true;
                         for (int k = 0; k < 6; k++) {
                             pole[i + k][j].setIcon(ic6);
                         }
                         JLabel vyhra = new JLabel("1. player - You're better!");
                         pocetprvy++;
-                        win = new Win(vyhra, pocetprvy, pocetdruhy);
+                        win = new Win(vyhra, pocetprvy, pocetdruhy,farba);
                         win.setVisible(true);
                     } else {
-                        vyherca = false;
                         for (int k = 0; k < 6; k++) {
                             pole[i + k][j].setIcon(ic3);
                         }
                         JLabel vyhra = new JLabel("2. player - You're better!");
                         pocetdruhy++;
-                        win = new Win(vyhra, pocetprvy, pocetdruhy);
+                        win = new Win(vyhra, pocetprvy, pocetdruhy,farba);
                         win.setVisible(true);
                     }
                 }
@@ -200,29 +231,27 @@ public class Field extends JPanel {
         }
         for (int i = 0; i < pole.length; i++) {
             for (int j = 0; j <= pole[i].length - 6; j++) {
-                if (pole[i][j].getIcon() != ic8
+                if (pole[i][j].getIcon() != ic8 && pole[i][j].getIcon() != ic3 && pole[i][j].getIcon() != ic6
                         && pole[i][j].getIcon() == pole[i][j + 1].getIcon()
                         && pole[i][j].getIcon() == pole[i][j + 2].getIcon()
                         && pole[i][j].getIcon() == pole[i][j + 3].getIcon()
                         && pole[i][j].getIcon() == pole[i][j + 4].getIcon()
                         && pole[i][j].getIcon() == pole[i][j + 5].getIcon()) {
                     if (prvy) {
-                        vyherca = true;
                         for (int k = 0; k < 6; k++) {
                             pole[i][j + k].setIcon(ic6);
                         }
                         JLabel vyhra = new JLabel("1. player - You're better!");
                         pocetprvy++;
-                        win = new Win(vyhra, pocetprvy, pocetdruhy);
+                        win = new Win(vyhra, pocetprvy, pocetdruhy,farba);
                         win.setVisible(true);
                     } else {
-                        vyherca = false;
                         for (int k = 0; k < 6; k++) {
                             pole[i][j + k].setIcon(ic3);
                         }
                         JLabel vyhra = new JLabel("2. player - You're better!");
                         pocetdruhy++;
-                        win = new Win(vyhra, pocetprvy, pocetdruhy);
+                        win = new Win(vyhra, pocetprvy, pocetdruhy,farba);
                         win.setVisible(true);
                     }
 
