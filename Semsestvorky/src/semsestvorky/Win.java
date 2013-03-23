@@ -68,8 +68,8 @@ class Win extends JDialog implements ActionListener {
         this.add(obr2);
         obr2.setBounds(190, 35, 35, 35);
 
-        cancel = new JButton("Cancel");
-        newGame = new JButton("Next Game");
+        cancel = new JButton("Continue");
+        newGame = new JButton("Clear Field");
         this.add(newGame);
         newGame.setBounds(160, 82, 100, 25);
         this.add(cancel);

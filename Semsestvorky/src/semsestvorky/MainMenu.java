@@ -4,6 +4,7 @@
  */
 package semsestvorky;
 
+import java.awt.Font;
 import java.awt.event.*;
 import javax.swing.*;
 
@@ -23,6 +24,9 @@ public class MainMenu extends JFrame {
 
     boolean hra = true;
     int farba = 0;
+    boolean far0 = true;
+    boolean far1 = false;
+    boolean far2 = false;
     public static int m = 10;
     public static int n = 10;
     public static int a = 10;
@@ -43,20 +47,30 @@ public class MainMenu extends JFrame {
         });
         JMenuBar menu = new JMenuBar();
         this.setJMenuBar(menu);
-        JMenu file = new JMenu("File", true);
+        JMenu file = new JMenu("File", false);
+        JMenu help = new JMenu("Help", false);
+
         menu.add(file);
+        menu.add(help);
         JMenuItem newGame = new JMenuItem("New Game    ");
         JMenuItem settings = new JMenuItem("Settings");
         JMenuItem exit = new JMenuItem("Exit");
+        JMenuItem help1 = new JMenuItem("Connect6 Help");
+        JMenuItem about = new JMenuItem("About");
         file.add(newGame);
         file.addSeparator();
         file.add(settings);
         file.addSeparator();
         file.add(exit);
+        help.add(help1);
+        help.addSeparator();
+        help.add(about);
 
         newGame.addActionListener(new NovaHra());
         settings.addActionListener(new Nastavenia());
         exit.addActionListener(new Exit());
+        help1.addActionListener(new Help());
+        about.addActionListener(new About());
         //this.setLayout(null);
         this.setResizable(false);
         field = new Field(n, m, hra, farba);
@@ -113,12 +127,16 @@ public class MainMenu extends JFrame {
             this.setLocation(550, 200);
             this.setSize(280, 240);
             this.setResizable(false);
+            this.setModal(true);
             CB1 = new ButtonGroup();
             CB2 = new ButtonGroup();
 
             w1 = new JLabel("Width");
+            w1.setFont(new Font("Arial", Font.ITALIC, 12));
             h1 = new JLabel("Height");
+            h1.setFont(new Font("Arial", Font.ITALIC, 12));
             max = new JLabel("(6-19)");
+            max.setFont(new Font("Arial", Font.ITALIC, 12));
             size = new JLabel("Size of Field:");
             game = new JLabel("Game Mod:");
             color = new JLabel("Select a color:");
@@ -126,11 +144,16 @@ public class MainMenu extends JFrame {
             width = new JTextField();
             height = new JTextField();
 
-            c6 = new JCheckBox("Connect 6", true);
-            ttt = new JCheckBox("Tic Tac Toe", false);
-            blue = new JCheckBox("Blue", true);
-            green = new JCheckBox("Green", false);
-            grey = new JCheckBox("Grey", false);
+            c6 = new JCheckBox("Connect 6", hra);
+            c6.setFont(new Font("Arial", Font.ITALIC, 12));
+            ttt = new JCheckBox("Tic Tac Toe", !hra);
+            ttt.setFont(new Font("Arial", Font.ITALIC, 12));
+            blue = new JCheckBox("Blue", far0);
+            blue.setFont(new Font("Arial", Font.ITALIC, 12));
+            green = new JCheckBox("Green", far1);
+            green.setFont(new Font("Arial", Font.ITALIC, 12));
+            grey = new JCheckBox("Grey", far2);
+            grey.setFont(new Font("Arial", Font.ITALIC, 12));
 
             CB1.add(c6);
             CB1.add(ttt);
@@ -150,9 +173,9 @@ public class MainMenu extends JFrame {
             this.add(size);
             size.setBounds(98, 10, 100, 20);
             this.add(game);
-            game.setBounds(100, 75, 100, 20);
+            game.setBounds(102, 75, 100, 20);
             this.add(color);
-            color.setBounds(100, 120, 100, 20);
+            color.setBounds(95, 120, 100, 20);
 
             this.add(width);
             width.setBounds(65, 48, 50, 20);
@@ -228,18 +251,105 @@ public class MainMenu extends JFrame {
 
         @Override
         public void itemStateChanged(ItemEvent e) {
-            if (c6.isSelected()) {
-                hra = true;
-            } else {
+            if (ttt.isSelected()) {
                 hra = false;
+            } else if (c6.isSelected()) {
+                hra = true;
             }
             if (blue.isSelected()) {
                 farba = 0;
+                far0 = true;
+                far1 = false;
+                far2 = false;
             } else if (green.isSelected()) {
                 farba = 1;
+                far0 = false;
+                far1 = true;
+                far2 = false;
             } else if (grey.isSelected()) {
                 farba = 2;
+                far0 = false;
+                far1 = false;
+                far2 = true;
             }
+        }
+    }
+
+    class Help extends JDialog implements ActionListener {
+
+        JLabel help, title;
+
+        Help() {
+            addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowClosing(WindowEvent we) {
+                    we.getWindow().dispose();
+                }
+            });
+            this.setTitle("Help");
+            this.setLayout(null);
+            this.setLocation(550, 200);
+            this.setSize(320, 180);
+            this.setResizable(false);
+            this.setModal(true);
+            
+            title = new JLabel("The rules of Connect6: ");
+            title.setBounds(95, 5, 200, 25);
+            this.add(title);
+            help = new JLabel("<html> Is't game two players. Basics of the game is connect<br>"
+                    + " your symbols to the 6-member family. Symbols can be<br>"
+                    + " linked vertically horizontally or diagonally. First player<br>"
+                    + " starts with one symbol and then both of players have two<br> "
+                    + " symbols in one move. Win player that will link 6 symbols first<html>");
+            help.setFont(new Font("Arial", Font.ITALIC, 12));
+            help.setBounds(5, 5, 310, 150);
+            this.add(help);
+
+
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            new Help().setVisible(true);
+        }
+    }
+
+    class About extends JDialog implements ActionListener {
+
+        JLabel about0, about1, about2;
+
+        About() {
+            addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowClosing(WindowEvent we) {
+                    we.getWindow().dispose();
+                }
+            });
+            this.setTitle("About");
+            this.setLayout(null);
+            this.setLocation(550, 200);
+            this.setSize(280, 180);
+            this.setResizable(false);
+            this.setModal(true);
+
+            about0 = new JLabel("CONNECT6 version 1.0");
+            about1 = new JLabel("Built 23.3.2013");
+            about2 = new JLabel("Copyright(C) Peter Ladomirjak 2013");
+            
+            this.add(about0);
+            about0.setBounds(60, 20, 250, 25);
+            about0.setFont(new Font("Arial", Font.BOLD, 14));
+            this.add(about1);
+            about1.setBounds(100, 40, 100, 25);
+            about1.setFont(new Font("Arial", Font.ITALIC, 12));
+            this.add(about2);
+            about2.setBounds(40, 80, 200, 25);
+            about2.setFont(new Font("Arial", Font.ITALIC, 12));
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            new About().setVisible(true);
         }
     }
 }
