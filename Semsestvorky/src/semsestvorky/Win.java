@@ -29,7 +29,6 @@ class Win extends JDialog implements ActionListener {
         this.setLayout(null);
         winner = vyhra;
         vyhra.setFont(new Font("Arial", Font.BOLD, 18));
-        vyhra.setForeground(Color.RED);
         super.setTitle("Congratulations!");
         this.setLocation(550, 200);
         this.setSize(290, 150);
@@ -55,13 +54,11 @@ class Win extends JDialog implements ActionListener {
         this.add(prvy);
         prvy.setBounds(100, 42, 50, 25);
         prvy.setFont(new Font("Arial", Font.BOLD, 20));
-        prvy.setForeground(Color.blue);
         this.add(druhy);
         druhy.setBounds(230, 42, 50, 25);
         druhy.setFont(new Font("Arial", Font.BOLD, 20));
-        druhy.setForeground(Color.blue);
         this.add(vyhra);
-        vyhra.setBounds(39, 5, 250, 25);
+        vyhra.setBounds(85, 5, 250, 25);
 
         this.add(obr1);
         obr1.setBounds(60, 35, 35, 35);

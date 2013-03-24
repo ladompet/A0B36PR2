@@ -4,6 +4,7 @@
  */
 package semsestvorky;
 
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.*;
 import javax.swing.*;
@@ -38,7 +39,8 @@ public class MainMenu extends JFrame {
 
     MainMenu() {
         super.setTitle("Connect6");
-        this.setBounds(350, 0, 0, 0);
+        this.setLocation(350, 0);
+        this.setBackground(Color.DARK_GRAY);
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
@@ -52,6 +54,7 @@ public class MainMenu extends JFrame {
 
         menu.add(file);
         menu.add(help);
+       
         JMenuItem newGame = new JMenuItem("New Game    ");
         JMenuItem settings = new JMenuItem("Settings");
         JMenuItem exit = new JMenuItem("Exit");
@@ -71,11 +74,12 @@ public class MainMenu extends JFrame {
         exit.addActionListener(new Exit());
         help1.addActionListener(new Help());
         about.addActionListener(new About());
-        //this.setLayout(null);
+//        this.setLayout(null);
+
         this.setResizable(false);
         field = new Field(n, m, hra, farba);
         this.add(field);
-        this.setSize(x * (n + 1) - 29, x * (m + 1) + 17);
+        this.setSize(x * (n + 1) - 29, x * (m + 1) + 53);
 
     }
 
@@ -99,7 +103,7 @@ public class MainMenu extends JFrame {
             MainMenu.this.setVisible(false);
             MainMenu.this.remove(field);
             MainMenu.this.add(field = new Field(a, b, hra, farba));
-            MainMenu.this.setSize(x * (a + 1) - 29, x * (b + 1) + 17);
+            MainMenu.this.setSize(x * (a + 1) - 29, x * (b + 1) + 53);
             MainMenu.this.setVisible(true);
 
         }
@@ -110,8 +114,7 @@ public class MainMenu extends JFrame {
         JTextField width, height;
         JLabel w1, h1, max, size, game, color;
         JCheckBox c6, ttt, blue, green, grey;
-        ButtonGroup CB1;
-        ButtonGroup CB2;
+        ButtonGroup CB1, CB2;
         JButton ok, cancel;
         int m, n;
 
@@ -292,7 +295,7 @@ public class MainMenu extends JFrame {
             this.setSize(320, 180);
             this.setResizable(false);
             this.setModal(true);
-            
+
             title = new JLabel("The rules of Connect6: ");
             title.setBounds(95, 5, 200, 25);
             this.add(title);
@@ -335,7 +338,7 @@ public class MainMenu extends JFrame {
             about0 = new JLabel("CONNECT6 version 1.0");
             about1 = new JLabel("Built 23.3.2013");
             about2 = new JLabel("Copyright(C) Peter Ladomirjak 2013");
-            
+
             this.add(about0);
             about0.setBounds(60, 20, 250, 25);
             about0.setFont(new Font("Arial", Font.BOLD, 14));
