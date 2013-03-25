@@ -29,6 +29,8 @@ public class Field extends JPanel {
     int pocetturn;
     int pocetprvy = 0;
     int pocetdruhy = 0;
+    boolean iconset1 = false;
+    boolean iconset2 = false;
     boolean vyherca;
     boolean prvy = true;
     int sp;
@@ -268,117 +270,138 @@ public class Field extends JPanel {
     }
 
     public void vyhra() {
-        for (int i = 0; i <= pole.length - sp; i++) {
-            for (int j = 0; j <= pole[i].length - sp; j++) {
-                if (pole[i][j].getIcon() != ic8 && pole[i][j].getIcon() != ic3 && pole[i][j].getIcon() != ic6
-                        && pole[i][j].getIcon() == pole[i + 1][j + 1].getIcon()
-                        && pole[i][j].getIcon() == pole[i + 2][j + 2].getIcon()
-                        && pole[i][j].getIcon() == pole[i + 3][j + 3].getIcon()
-                        && pole[i][j].getIcon() == pole[i + 4][j + 4].getIcon()
-                        && pole[i][j].getIcon() == pole[i + sp3][j + sp3].getIcon()) {
-                    if (prvy) {
-                        for (int k = 0; k < sp; k++) {
-                            pole[i + k][j + k].setIcon(ic6);
-                        }
-                        JLabel vyhra = new JLabel("1. player win!");
-                        pocetprvy++;
-                        win = new Win(vyhra, pocetprvy, pocetdruhy, farba);
-                        win.setVisible(true);
-                    } else {
-                        for (int k = 0; k < sp; k++) {
-                            pole[i + k][j + k].setIcon(ic3);
-                        }
-                        JLabel vyhra = new JLabel("2. player win!");
-                        pocetdruhy++;
-                        win = new Win(vyhra, pocetprvy, pocetdruhy, farba);
-                        win.setVisible(true);
-                    }
+        for (int o = 0; o < pole.length; o++) {
+            for (int p = 0; p < pole.length; p++) {
+                if (pole[o][p].getIcon() == ic3) {
+                    pole[o][p].setIcon(ic1);
+                    iconset1 = true;
+                }else if (pole[o][p].getIcon() == ic6) {
+                    pole[o][p].setIcon(ic4);
+                    iconset2 = true;
                 }
-            }
-        }
-        for (int i = pole.length - 1; i > sp2; i--) {
-            for (int j = 0; j <= pole[i].length - sp; j++) {
-                if (pole[i][j].getIcon() != ic8 && pole[i][j].getIcon() != ic3 && pole[i][j].getIcon() != ic6
-                        && pole[i][j].getIcon() == pole[i - 1][j + 1].getIcon()
-                        && pole[i][j].getIcon() == pole[i - 2][j + 2].getIcon()
-                        && pole[i][j].getIcon() == pole[i - 3][j + 3].getIcon()
-                        && pole[i][j].getIcon() == pole[i - 4][j + 4].getIcon()
-                        && pole[i][j].getIcon() == pole[i - sp3][j + sp3].getIcon()) {
-                    if (prvy) {
-                        for (int k = 0; k < sp; k++) {
-                            pole[i - k][j + k].setIcon(ic6);
-                        }
-                        JLabel vyhra = new JLabel("1. player win!");
-                        pocetprvy++;
-                        win = new Win(vyhra, pocetprvy, pocetdruhy, farba);
-                        win.setVisible(true);
-                    } else {
-                        for (int k = 0; k < sp; k++) {
-                            pole[i - k][j + k].setIcon(ic3);
-                        }
-                        JLabel vyhra = new JLabel("2. player win!");
-                        pocetdruhy++;
-                        win = new Win(vyhra, pocetprvy, pocetdruhy, farba);
-                        win.setVisible(true);
-                    }
-                }
-            }
-        }
-        for (int i = 0; i <= pole.length - sp; i++) {
-            for (int j = 0; j < pole[i].length; j++) {
-                if (pole[i][j].getIcon() != ic8 && pole[i][j].getIcon() != ic3 && pole[i][j].getIcon() != ic6
-                        && pole[i][j].getIcon() == pole[i + 1][j].getIcon()
-                        && pole[i][j].getIcon() == pole[i + 2][j].getIcon()
-                        && pole[i][j].getIcon() == pole[i + 3][j].getIcon()
-                        && pole[i][j].getIcon() == pole[i + 4][j].getIcon()
-                        && pole[i][j].getIcon() == pole[i + sp3][j].getIcon()) {
-                    if (prvy) {
-                        for (int k = 0; k < sp; k++) {
-                            pole[i + k][j].setIcon(ic6);
-                        }
-                        JLabel vyhra = new JLabel("1. player win!");
-                        pocetprvy++;
-                        win = new Win(vyhra, pocetprvy, pocetdruhy, farba);
-                        win.setVisible(true);
-                    } else {
-                        for (int k = 0; k < sp; k++) {
-                            pole[i + k][j].setIcon(ic3);
-                        }
-                        JLabel vyhra = new JLabel("2. player win!");
-                        pocetdruhy++;
-                        win = new Win(vyhra, pocetprvy, pocetdruhy, farba);
-                        win.setVisible(true);
-                    }
-                }
-            }
-        }
-        for (int i = 0; i < pole.length; i++) {
-            for (int j = 0; j <= pole[i].length - sp; j++) {
-                if (pole[i][j].getIcon() != ic8 && pole[i][j].getIcon() != ic3 && pole[i][j].getIcon() != ic6
-                        && pole[i][j].getIcon() == pole[i][j + 1].getIcon()
-                        && pole[i][j].getIcon() == pole[i][j + 2].getIcon()
-                        && pole[i][j].getIcon() == pole[i][j + 3].getIcon()
-                        && pole[i][j].getIcon() == pole[i][j + 4].getIcon()
-                        && pole[i][j].getIcon() == pole[i][j + sp3].getIcon()) {
-                    if (prvy) {
-                        for (int k = 0; k < sp; k++) {
-                            pole[i][j + k].setIcon(ic6);
-                        }
-                        JLabel vyhra = new JLabel("1. player win!");
-                        pocetprvy++;
-                        win = new Win(vyhra, pocetprvy, pocetdruhy, farba);
-                        win.setVisible(true);
-                    } else {
-                        for (int k = 0; k < sp; k++) {
-                            pole[i][j + k].setIcon(ic3);
-                        }
-                        JLabel vyhra = new JLabel("2. player win!");
-                        pocetdruhy++;
-                        win = new Win(vyhra, pocetprvy, pocetdruhy, farba);
-                        win.setVisible(true);
-                    }
 
+                for (int i = 0; i <= pole.length - sp; i++) {
+                    for (int j = 0; j <= pole[i].length - sp; j++) {
+                        if (pole[i][j].getIcon() != ic8 && pole[i][j].getIcon() != ic3 && pole[i][j].getIcon() != ic6
+                                && pole[i][j].getIcon() == pole[i + 1][j + 1].getIcon()
+                                && pole[i][j].getIcon() == pole[i + 2][j + 2].getIcon()
+                                && pole[i][j].getIcon() == pole[i + 3][j + 3].getIcon()
+                                && pole[i][j].getIcon() == pole[i + 4][j + 4].getIcon()
+                                && pole[i][j].getIcon() == pole[i + sp3][j + sp3].getIcon()) {
+                            if (prvy) {
+                                for (int k = 0; k < sp; k++) {
+                                    pole[i + k][j + k].setIcon(ic6);
+                                }
+                                JLabel vyhra = new JLabel("1. player win!");
+                                pocetprvy++;
+                                win = new Win(vyhra, pocetprvy, pocetdruhy, farba);
+                                win.setVisible(true);
+                            } else {
+                                for (int k = 0; k < sp; k++) {
+                                    pole[i + k][j + k].setIcon(ic3);
+                                }
+                                JLabel vyhra = new JLabel("2. player win!");
+                                pocetdruhy++;
+                                win = new Win(vyhra, pocetprvy, pocetdruhy, farba);
+                                win.setVisible(true);
+                            }
+                        }
+                    }
                 }
+                for (int i = pole.length - 1; i > sp2; i--) {
+                    for (int j = 0; j <= pole[i].length - sp; j++) {
+                        if (pole[i][j].getIcon() != ic8 && pole[i][j].getIcon() != ic3 && pole[i][j].getIcon() != ic6
+                                && pole[i][j].getIcon() == pole[i - 1][j + 1].getIcon()
+                                && pole[i][j].getIcon() == pole[i - 2][j + 2].getIcon()
+                                && pole[i][j].getIcon() == pole[i - 3][j + 3].getIcon()
+                                && pole[i][j].getIcon() == pole[i - 4][j + 4].getIcon()
+                                && pole[i][j].getIcon() == pole[i - sp3][j + sp3].getIcon()) {
+                            if (prvy) {
+                                for (int k = 0; k < sp; k++) {
+                                    pole[i - k][j + k].setIcon(ic6);
+                                }
+                                JLabel vyhra = new JLabel("1. player win!");
+                                pocetprvy++;
+                                win = new Win(vyhra, pocetprvy, pocetdruhy, farba);
+                                win.setVisible(true);
+                            } else {
+                                for (int k = 0; k < sp; k++) {
+                                    pole[i - k][j + k].setIcon(ic3);
+                                }
+                                JLabel vyhra = new JLabel("2. player win!");
+                                pocetdruhy++;
+                                win = new Win(vyhra, pocetprvy, pocetdruhy, farba);
+                                win.setVisible(true);
+                            }
+                        }
+                    }
+                }
+                for (int i = 0; i <= pole.length - sp; i++) {
+                    for (int j = 0; j < pole[i].length; j++) {
+                        if (pole[i][j].getIcon() != ic8 && pole[i][j].getIcon() != ic3 && pole[i][j].getIcon() != ic6
+                                && pole[i][j].getIcon() == pole[i + 1][j].getIcon()
+                                && pole[i][j].getIcon() == pole[i + 2][j].getIcon()
+                                && pole[i][j].getIcon() == pole[i + 3][j].getIcon()
+                                && pole[i][j].getIcon() == pole[i + 4][j].getIcon()
+                                && pole[i][j].getIcon() == pole[i + sp3][j].getIcon()) {
+                            if (prvy) {
+                                for (int k = 0; k < sp; k++) {
+                                    pole[i + k][j].setIcon(ic6);
+                                }
+                                JLabel vyhra = new JLabel("1. player win!");
+                                pocetprvy++;
+                                win = new Win(vyhra, pocetprvy, pocetdruhy, farba);
+                                win.setVisible(true);
+                            } else {
+                                for (int k = 0; k < sp; k++) {
+                                    pole[i + k][j].setIcon(ic3);
+                                }
+                                JLabel vyhra = new JLabel("2. player win!");
+                                pocetdruhy++;
+                                win = new Win(vyhra, pocetprvy, pocetdruhy, farba);
+                                win.setVisible(true);
+                            }
+                        }
+                    }
+                }
+                for (int i = 0; i < pole.length; i++) {
+                    for (int j = 0; j <= pole[i].length - sp; j++) {
+                        if (pole[i][j].getIcon() != ic8 && pole[i][j].getIcon() != ic3 && pole[i][j].getIcon() != ic6
+                                && pole[i][j].getIcon() == pole[i][j + 1].getIcon()
+                                && pole[i][j].getIcon() == pole[i][j + 2].getIcon()
+                                && pole[i][j].getIcon() == pole[i][j + 3].getIcon()
+                                && pole[i][j].getIcon() == pole[i][j + 4].getIcon()
+                                && pole[i][j].getIcon() == pole[i][j + sp3].getIcon()) {
+                            if (prvy) {
+                                for (int k = 0; k < sp; k++) {
+                                    pole[i][j + k].setIcon(ic6);
+                                }
+                                JLabel vyhra = new JLabel("1. player win!");
+                                pocetprvy++;
+                                win = new Win(vyhra, pocetprvy, pocetdruhy, farba);
+                                win.setVisible(true);
+                            } else {
+                                for (int k = 0; k < sp; k++) {
+                                    pole[i][j + k].setIcon(ic3);
+                                }
+                                JLabel vyhra = new JLabel("2. player win!");
+                                pocetdruhy++;
+                                win = new Win(vyhra, pocetprvy, pocetdruhy, farba);
+                                win.setVisible(true);
+                            }
+
+                        }
+                    }
+                }
+                //////////////////
+                if (iconset1 == true) {
+                    pole[o][p].setIcon(ic3);
+                    iconset1 = false;
+                }else if (iconset2 == true) {
+                    pole[o][p].setIcon(ic6);
+                    iconset2=false;
+                }
+                ///////////////////////
             }
         }
     }

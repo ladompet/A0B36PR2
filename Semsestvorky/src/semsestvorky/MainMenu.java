@@ -209,8 +209,8 @@ public class MainMenu extends JFrame {
 
             width.setEditable(true);
             height.setEditable(true);
-            width.setText("10");
-            height.setText("10");
+            width.setText(String.valueOf(a));
+            height.setText(String.valueOf(b));
 
             this.add(ok);
             ok.setBounds(157, 190, 75, 25);

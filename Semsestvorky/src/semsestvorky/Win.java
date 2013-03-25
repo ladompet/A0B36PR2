@@ -42,6 +42,9 @@ class Win extends JDialog implements ActionListener {
         } else if (farba == 2) {
             icx = new ImageIcon("obrazky/grey/x1.jpg");
             ico = new ImageIcon("obrazky/grey/o1.jpg");
+        } else if (farba == 3) {
+            icx = new ImageIcon("obrazky/yellow/x1.jpg");
+            ico = new ImageIcon("obrazky/yellow/o1.jpg");
         }
 
         obr1 = new JLabel(icx, JLabel.CENTER);;
