@@ -24,19 +24,17 @@ class Closer extends WindowAdapter {
 public class MainMenu extends JFrame {
 
     boolean hra = true;
-    boolean fx = true;
-    int farba = 0;
-    boolean far0 = true;
-    boolean far1 = false;
-    boolean far2 = false;
-    boolean far3 = false;
-    public static int m = 10;
-    public static int n = 10;
-    public static int a = 10;
-    public static int b = 10;
-    public static int x = 35;
-    Nastavenia options = new Nastavenia();
-    JButton[][] pole;
+    int typecolor = 0;
+    boolean color0 = true;
+    boolean color1 = false;
+    boolean color2 = false;
+    boolean color3 = false;
+    public static int n = 10;   //value of width
+    public static int m = 10;   //value of height
+    public static int a = 10;   //new value of n
+    public static int b = 10;   //new value of m
+    public static int x = 35;   //size of button
+    Settings options = new Settings();
     Field field;
 
     MainMenu() {
@@ -71,17 +69,17 @@ public class MainMenu extends JFrame {
         help.addSeparator();
         help.add(about);
 
-        newGame.addActionListener(new NovaHra());
-        settings.addActionListener(new Nastavenia());
+        newGame.addActionListener(new NewGame());
+        settings.addActionListener(new Settings());
         exit.addActionListener(new Exit());
         help1.addActionListener(new Help());
         about.addActionListener(new About());
 //        this.setLayout(null);
 
         this.setResizable(false);
-        field = new Field(n, m, hra, farba, fx, true);
+        field = new Field(n, m, hra, typecolor);
         this.add(field);
-        this.setSize(x * (n + 1) - 29, x * (m + 1) + 43);
+        this.setSize(x * (n + 1) - 29, x * (m + 1) + 45);
 
     }
 
@@ -93,33 +91,33 @@ public class MainMenu extends JFrame {
         }
     }
 
-    class NovaHra implements ActionListener {
+    class NewGame implements ActionListener {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-                if (hra) {
-                    MainMenu.super.setTitle("Connect6");
-                } else {
-                    MainMenu.super.setTitle("Tic Tac Toe");
-                }
-                MainMenu.this.setVisible(false);
-                MainMenu.this.remove(field);
-                MainMenu.this.add(field = new Field(a, b, hra, farba, fx, true));
-                MainMenu.this.setSize(x * (a + 1) - 29, x * (b + 1) + 43);
-                MainMenu.this.setVisible(true);
+            if (hra) {
+                MainMenu.super.setTitle("Connect6");
+            } else {
+                MainMenu.super.setTitle("Tic Tac Toe");
+            }
+            MainMenu.this.setVisible(false);
+            MainMenu.this.remove(field);
+            MainMenu.this.add(field = new Field(a, b, hra, typecolor));
+            MainMenu.this.setSize(x * (a + 1) - 29, x * (b + 1) + 45);
+            MainMenu.this.setVisible(true);
         }
     }
 
-    class Nastavenia extends JDialog implements ActionListener, ItemListener {
+    class Settings extends JDialog implements ActionListener, ItemListener {
 
         JTextField width, height;
         JLabel w1, h1, max, size, game, color;
-        JCheckBox c6, ttt, blue, green, grey, yellow, soundfx;
+        JCheckBox c6, ttt, blue, green, grey, yellow;
         ButtonGroup CB1, CB2;
         JButton ok, cancel;
         int m, n;
 
-        Nastavenia() {
+        Settings() {
             addWindowListener(new WindowAdapter() {
                 @Override
                 public void windowClosing(WindowEvent we) {
@@ -129,7 +127,7 @@ public class MainMenu extends JFrame {
             this.setTitle("Settings");
             this.setLayout(null);
             this.setLocation(550, 200);
-            this.setSize(280, 260);
+            this.setSize(280, 240);
             this.setResizable(false);
             this.setModal(true);
             CB1 = new ButtonGroup();
@@ -152,16 +150,14 @@ public class MainMenu extends JFrame {
             c6.setFont(new Font("Arial", Font.ITALIC, 12));
             ttt = new JCheckBox("Tic Tac Toe", !hra);
             ttt.setFont(new Font("Arial", Font.ITALIC, 12));
-            blue = new JCheckBox("Blue", far0);
+            blue = new JCheckBox("Blue", color0);
             blue.setFont(new Font("Arial", Font.ITALIC, 12));
-            green = new JCheckBox("Green", far1);
+            green = new JCheckBox("Green", color1);
             green.setFont(new Font("Arial", Font.ITALIC, 12));
-            grey = new JCheckBox("Grey", far2);
+            grey = new JCheckBox("Grey", color2);
             grey.setFont(new Font("Arial", Font.ITALIC, 12));
-            yellow = new JCheckBox("Yellow", far3);
+            yellow = new JCheckBox("Yellow", color3);
             yellow.setFont(new Font("Arial", Font.ITALIC, 12));
-            soundfx = new JCheckBox("Sound FX", fx);
-            soundfx.setFont(new Font("Arial", Font.ITALIC, 12));
 
             CB1.add(c6);
             CB1.add(ttt);
@@ -203,8 +199,6 @@ public class MainMenu extends JFrame {
             grey.setBounds(135, 140, 60, 20);
             this.add(yellow);
             yellow.setBounds(195, 140, 70, 20);
-            this.add(soundfx);
-            soundfx.setBounds(100, 165, 100, 20);
 
             width.setEditable(true);
             height.setEditable(true);
@@ -212,9 +206,9 @@ public class MainMenu extends JFrame {
             height.setText(String.valueOf(b));
 
             this.add(ok);
-            ok.setBounds(157, 190, 75, 25);
+            ok.setBounds(157, 170, 75, 25);
             this.add(cancel);
-            cancel.setBounds(47, 190, 75, 25);
+            cancel.setBounds(47, 170, 75, 25);
 
             ok.addActionListener(new ActionListener() {
                 @Override
@@ -239,15 +233,15 @@ public class MainMenu extends JFrame {
                     }
                     a = n;
                     b = m;
-                    new NovaHra().actionPerformed(ae);
-                    Nastavenia.this.dispose();
+                    new NewGame().actionPerformed(ae);
+                    Settings.this.dispose();
                 }
             });
             cancel.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent ae) {
 
-                    Nastavenia.this.dispose();
+                    Settings.this.dispose();
                 }
             });
             c6.addItemListener(this);
@@ -256,12 +250,11 @@ public class MainMenu extends JFrame {
             green.addItemListener(this);
             grey.addItemListener(this);
             yellow.addItemListener(this);
-            soundfx.addItemListener(this);
         }
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            new Nastavenia().setVisible(true);
+            new Settings().setVisible(true);
         }
 
         @Override
@@ -272,34 +265,29 @@ public class MainMenu extends JFrame {
                 hra = true;
             }
             if (blue.isSelected()) {
-                farba = 0;
-                far0 = true;
-                far1 = false;
-                far2 = false;
-                far3 = false;
+                typecolor = 0;
+                color0 = true;
+                color1 = false;
+                color2 = false;
+                color3 = false;
             } else if (green.isSelected()) {
-                farba = 1;
-                far0 = false;
-                far1 = true;
-                far2 = false;
-                far3 = false;
+                typecolor = 1;
+                color0 = false;
+                color1 = true;
+                color2 = false;
+                color3 = false;
             } else if (grey.isSelected()) {
-                farba = 2;
-                far0 = false;
-                far1 = false;
-                far2 = true;
-                far3 = false;
+                typecolor = 2;
+                color0 = false;
+                color1 = false;
+                color2 = true;
+                color3 = false;
             } else if (yellow.isSelected()) {
-                farba = 3;
-                far0 = false;
-                far1 = false;
-                far2 = false;
-                far3 = true;
-            }
-            if (soundfx.isSelected()) {
-                fx = true;
-            } else if (!soundfx.isSelected()) {
-                fx = false;
+                typecolor = 3;
+                color0 = false;
+                color1 = false;
+                color2 = false;
+                color3 = true;
             }
         }
     }

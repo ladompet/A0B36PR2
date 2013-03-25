@@ -7,10 +7,11 @@ package semsestvorky;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Panel;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
-import java.io.IOException;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.swing.*;
@@ -20,47 +21,47 @@ import static semsestvorky.MainMenu.x;
  *
  * @author Piotr04_SVK
  */
-public class Field extends JPanel {
+public class Field extends JPanel implements ItemListener {
 
-    boolean hra;
-    boolean effects;
+    boolean effects = true;
     int farba;
-    int pocet;
-    int pocetturn;
-    int pocetprvy = 0;
-    int pocetdruhy = 0;
+    int endgame = 0;
+    int numberTurn;     // coneect6 vs tic tac toe turn
+    int firstscore = 0;
+    int secondscore = 0;
     boolean iconset1 = false;
     boolean iconset2 = false;
-    boolean vyherca;
     boolean prvy = true;
-    int sp;
-    int sp2;
-    int sp3;
-    int ii = 0;
-    int t = 1;
+    int TTT1;   // tic tac toe 1
+    int TTT2;   // tic tac toe 2
+    int TTT3;   // tic tac toe 3
+    int width;
+    int height;
+    int ii = 0; // turns connect6
+    int t = 1;  // turns tic tac toe
     boolean turn = true;
     Win win;
-    JButton[][] pole;
+    JButton[][] field;
     ImageIcon[] icColor = new ImageIcon[10];
     ImageIcon[] icPlayer = new ImageIcon[2];
+    JCheckBox soundfx = new JCheckBox("Sound FX",true);
+    JButton playerpics = new JButton();
     
-    
-    JButton hracobr = new JButton();
 
-    Field(int n, int m, boolean c, int d, boolean fx, boolean change) {
-        effects = fx;
-        hra = c;
+    Field(int n, int m, boolean hra, int d) {
+        width = n;
+        height = m;
         if (hra == true) {
-            pocet = 2;
-            sp = 6;
-            sp2 = 4;
-            sp3 = 5;
+            numberTurn = 2;
+            TTT1 = 6;
+            TTT2 = 4;
+            TTT3 = 5;
         } else if (hra == false) {
             prvy = false;
-            sp = 5;
-            sp2 = 3;
-            sp3 = 1;
-            pocet = 1;
+            TTT1 = 5;
+            TTT2 = 3;
+            TTT3 = 1;
+            numberTurn = 1;
         }
 
         color(d);
@@ -69,39 +70,50 @@ public class Field extends JPanel {
         p.setBounds(0, x * m, x * n * 2, 50);
 
         p.add(hrac);
-        hrac.setBounds(((x * n) / 2) - 33, x * m, 75, 25);
+        hrac.setBounds(x * n - 75, x * m, 75, 25);
         hrac.setFont(new Font("Arial", Font.BOLD, 12));
         hrac.setForeground(Color.BLACK);
         this.add(hrac);
 
-        p.add(hracobr);
-        hracobr.setIcon(icPlayer[1]);
-        hracobr.setBounds(((x * n) / 2) + 12, x * m, 26, 26);
-        this.add(hracobr);
+        p.add(playerpics);
+        playerpics.setIcon(icPlayer[1]);
+        playerpics.setBounds((x * n) - 30, x * m, 26, 26);
+        this.add(playerpics);
+
+        p.add(soundfx);
+        soundfx.setBackground(Color.GRAY);
+        soundfx.setForeground(Color.BLACK);
+        soundfx.setBounds(7, x * m + 2, 100, 20);
+        soundfx.setFont(new Font("Arial", Font.ITALIC, 12));
+        this.add(soundfx);
+        
 
         this.add(p);
         this.setBackground(Color.GRAY);
         this.setLayout(null);
 
-        if (change) {
-            pole = new JButton[n][m];
-            for (int i = 0; i < n; i++) {
-                for (int j = 0; j < m; j++) {
-                    pole[i][j] = new JButton(icColor[9]);
-                    pole[i][j].addMouseListener(new MouseL(i, j));
-                    int x = 35;
-                    pole[i][j].setBounds(x * i, x * j, x, x);
-                    this.add(pole[i][j]);
-                }
-            }
-        } else {
-            for (int i = 0; i < n; i++) {
-                for (int j = 0; j < m; j++) {
-                    color(d);
-                }
+        field = new JButton[n][m];
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < m; j++) {
+                field[i][j] = new JButton(icColor[9]);
+                field[i][j].addMouseListener(new MouseL(i, j));
+                int x = 35;
+                field[i][j].setBounds(x * i, x * j, x, x);
+                this.add(field[i][j]);
             }
         }
+                soundfx.addItemListener(this);
     }
+    
+        
+    @Override
+        public void itemStateChanged(ItemEvent e) {
+           if (soundfx.isSelected()){
+               effects = true;
+           } else if(!soundfx.isSelected()){
+               effects = false;
+           }
+        }
 
     public void color(int farba) {
         this.farba = farba;
@@ -127,7 +139,7 @@ public class Field extends JPanel {
             icColor[7] = new ImageIcon("obrazky/green/w1s.jpg");
             icColor[8] = new ImageIcon("obrazky/green/stlacene.jpg");
             icColor[9] = new ImageIcon("obrazky/green/tlacidlo.jpg");
-        }else if (farba == 2) {
+        } else if (farba == 2) {
             icColor[0] = new ImageIcon("obrazky/grey/o1.jpg");
             icColor[1] = new ImageIcon("obrazky/grey/o1s.jpg");
             icColor[2] = new ImageIcon("obrazky/grey/o1w.jpg");
@@ -156,7 +168,7 @@ public class Field extends JPanel {
         } else if (farba == 1) {
             icPlayer[0] = new ImageIcon("obrazky/green/xturn.jpg");
             icPlayer[1] = new ImageIcon("obrazky/green/oturn.jpg");
-        }else if (farba == 2) {
+        } else if (farba == 2) {
             icPlayer[0] = new ImageIcon("obrazky/grey/xturn.jpg");
             icPlayer[1] = new ImageIcon("obrazky/grey/oturn.jpg");
         } else if (farba == 3) {
@@ -169,7 +181,7 @@ public class Field extends JPanel {
     class MouseL extends MouseAdapter {
 
         int x, y;
-        private Clip clip;
+        Clip clip;
 
         MouseL(int x, int y) {
             this.x = x;
@@ -191,10 +203,10 @@ public class Field extends JPanel {
                 }
             }
 
-            if (pole[x][y].getIcon() == icColor[9]) {
+            if (field[x][y].getIcon() == icColor[9]) {
                 ii++;
                 t++;
-                if (pocet == 2) {
+                if (numberTurn == 2) {
                     if (t == 2) {
                         if (turn == true) {
                             turn = false;
@@ -211,7 +223,7 @@ public class Field extends JPanel {
                         ii = 0;
                         t = 1;
                     }
-                } else if (pocet == 1) {
+                } else if (numberTurn == 1) {
                     if (ii == 1) {
                         if (prvy == true) {
                             prvy = false;
@@ -225,16 +237,17 @@ public class Field extends JPanel {
 
                 }
             }
-            if (pole[x][y].getIcon() == icColor[4]) {
-                pole[x][y].setIcon(icColor[5]);
-            } else if (pole[x][y].getIcon() == icColor[0]) {
-                pole[x][y].setIcon(icColor[1]);
-            } else if (pole[x][y].getIcon() == icColor[6]) {
-                pole[x][y].setIcon(icColor[7]);
-            } else if (pole[x][y].getIcon() == icColor[2]) {
-                pole[x][y].setIcon(icColor[3]);
+            if (field[x][y].getIcon() == icColor[4]) {
+                field[x][y].setIcon(icColor[5]);
+            } else if (field[x][y].getIcon() == icColor[0]) {
+                field[x][y].setIcon(icColor[1]);
+            } else if (field[x][y].getIcon() == icColor[6]) {
+                field[x][y].setIcon(icColor[7]);
+            } else if (field[x][y].getIcon() == icColor[2]) {
+                field[x][y].setIcon(icColor[3]);
             } else {
-                pole[x][y].setIcon(icColor[8]);
+                field[x][y].setIcon(icColor[8]);
+                endgame++;
             }
         }
 
@@ -242,25 +255,26 @@ public class Field extends JPanel {
         public void mouseReleased(MouseEvent me) {
 
             if (turn == true) {
-                hracobr.setIcon(icPlayer[0]);
+                playerpics.setIcon(icPlayer[0]);
             } else if (turn == false) {
-                hracobr.setIcon(icPlayer[1]);
+                playerpics.setIcon(icPlayer[1]);
             }
-            if (pole[x][y].getIcon() == icColor[8]) {
+            if (field[x][y].getIcon() == icColor[8]) {
                 if (prvy) {
-                    pole[x][y].setIcon(icColor[4]);
+                    field[x][y].setIcon(icColor[4]);
                 } else {
-                    pole[x][y].setIcon(icColor[0]);
+                    field[x][y].setIcon(icColor[0]);
                 }
-            } else if (pole[x][y].getIcon() == icColor[1]) {
-                pole[x][y].setIcon(icColor[0]);
-            } else if (pole[x][y].getIcon() == icColor[5]) {
-                pole[x][y].setIcon(icColor[4]);
-            } else if (pole[x][y].getIcon() == icColor[3]) {
-                pole[x][y].setIcon(icColor[2]);
-            } else if (pole[x][y].getIcon() == icColor[7]) {
-                pole[x][y].setIcon(icColor[6]);
+            } else if (field[x][y].getIcon() == icColor[1]) {
+                field[x][y].setIcon(icColor[0]);
+            } else if (field[x][y].getIcon() == icColor[5]) {
+                field[x][y].setIcon(icColor[4]);
+            } else if (field[x][y].getIcon() == icColor[3]) {
+                field[x][y].setIcon(icColor[2]);
+            } else if (field[x][y].getIcon() == icColor[7]) {
+                field[x][y].setIcon(icColor[6]);
             }
+            GameOver();
             vyhra();
         }
 ////        @Override
@@ -275,123 +289,123 @@ public class Field extends JPanel {
     }
 
     public void vyhra() {
-        for (int o = 0; o < pole.length; o++) {
-            for (int p = 0; p < pole.length; p++) {
-                if (pole[o][p].getIcon() == icColor[2]) {
-                    pole[o][p].setIcon(icColor[0]);
+        for (int o = 0; o < field.length; o++) {
+            for (int p = 0; p < field.length; p++) {
+                if (field[o][p].getIcon() == icColor[2]) {
+                    field[o][p].setIcon(icColor[0]);
                     iconset1 = true;
-                } else if (pole[o][p].getIcon() == icColor[6]) {
-                    pole[o][p].setIcon(icColor[4]);
+                } else if (field[o][p].getIcon() == icColor[6]) {
+                    field[o][p].setIcon(icColor[4]);
                     iconset2 = true;
                 }
 
-                for (int i = 0; i <= pole.length - sp; i++) {
-                    for (int j = 0; j <= pole[i].length - sp; j++) {
-                        if (pole[i][j].getIcon() != icColor[9] && pole[i][j].getIcon() != icColor[2] && pole[i][j].getIcon() != icColor[6]
-                                && pole[i][j].getIcon() == pole[i + 1][j + 1].getIcon()
-                                && pole[i][j].getIcon() == pole[i + 2][j + 2].getIcon()
-                                && pole[i][j].getIcon() == pole[i + 3][j + 3].getIcon()
-                                && pole[i][j].getIcon() == pole[i + 4][j + 4].getIcon()
-                                && pole[i][j].getIcon() == pole[i + sp3][j + sp3].getIcon()) {
+                for (int i = 0; i <= field.length - TTT1; i++) {
+                    for (int j = 0; j <= field[i].length - TTT1; j++) {
+                        if (field[i][j].getIcon() != icColor[9] && field[i][j].getIcon() != icColor[2] && field[i][j].getIcon() != icColor[6]
+                                && field[i][j].getIcon() == field[i + 1][j + 1].getIcon()
+                                && field[i][j].getIcon() == field[i + 2][j + 2].getIcon()
+                                && field[i][j].getIcon() == field[i + 3][j + 3].getIcon()
+                                && field[i][j].getIcon() == field[i + 4][j + 4].getIcon()
+                                && field[i][j].getIcon() == field[i + TTT3][j + TTT3].getIcon()) {
                             if (prvy) {
-                                for (int k = 0; k < sp; k++) {
-                                    pole[i + k][j + k].setIcon(icColor[6]);
+                                for (int k = 0; k < TTT1; k++) {
+                                    field[i + k][j + k].setIcon(icColor[6]);
                                 }
                                 JLabel vyhra = new JLabel("1. player win!");
-                                pocetprvy++;
-                                win = new Win(vyhra, pocetprvy, pocetdruhy, farba);
+                                firstscore++;
+                                win = new Win(vyhra, firstscore, secondscore, farba);
                                 win.setVisible(true);
                             } else {
-                                for (int k = 0; k < sp; k++) {
-                                    pole[i + k][j + k].setIcon(icColor[2]);
+                                for (int k = 0; k < TTT1; k++) {
+                                    field[i + k][j + k].setIcon(icColor[2]);
                                 }
                                 JLabel vyhra = new JLabel("2. player win!");
-                                pocetdruhy++;
-                                win = new Win(vyhra, pocetprvy, pocetdruhy, farba);
+                                secondscore++;
+                                win = new Win(vyhra, firstscore, secondscore, farba);
                                 win.setVisible(true);
                             }
                         }
                     }
                 }
-                for (int i = pole.length - 1; i > sp2; i--) {
-                    for (int j = 0; j <= pole[i].length - sp; j++) {
-                        if (pole[i][j].getIcon() != icColor[9] && pole[i][j].getIcon() != icColor[2] && pole[i][j].getIcon() != icColor[6]
-                                && pole[i][j].getIcon() == pole[i - 1][j + 1].getIcon()
-                                && pole[i][j].getIcon() == pole[i - 2][j + 2].getIcon()
-                                && pole[i][j].getIcon() == pole[i - 3][j + 3].getIcon()
-                                && pole[i][j].getIcon() == pole[i - 4][j + 4].getIcon()
-                                && pole[i][j].getIcon() == pole[i - sp3][j + sp3].getIcon()) {
+                for (int i = field.length - 1; i > TTT2; i--) {
+                    for (int j = 0; j <= field[i].length - TTT1; j++) {
+                        if (field[i][j].getIcon() != icColor[9] && field[i][j].getIcon() != icColor[2] && field[i][j].getIcon() != icColor[6]
+                                && field[i][j].getIcon() == field[i - 1][j + 1].getIcon()
+                                && field[i][j].getIcon() == field[i - 2][j + 2].getIcon()
+                                && field[i][j].getIcon() == field[i - 3][j + 3].getIcon()
+                                && field[i][j].getIcon() == field[i - 4][j + 4].getIcon()
+                                && field[i][j].getIcon() == field[i - TTT3][j + TTT3].getIcon()) {
                             if (prvy) {
-                                for (int k = 0; k < sp; k++) {
-                                    pole[i - k][j + k].setIcon(icColor[6]);
+                                for (int k = 0; k < TTT1; k++) {
+                                    field[i - k][j + k].setIcon(icColor[6]);
                                 }
                                 JLabel vyhra = new JLabel("1. player win!");
-                                pocetprvy++;
-                                win = new Win(vyhra, pocetprvy, pocetdruhy, farba);
+                                firstscore++;
+                                win = new Win(vyhra, firstscore, secondscore, farba);
                                 win.setVisible(true);
                             } else {
-                                for (int k = 0; k < sp; k++) {
-                                    pole[i - k][j + k].setIcon(icColor[3]);
+                                for (int k = 0; k < TTT1; k++) {
+                                    field[i - k][j + k].setIcon(icColor[3]);
                                 }
                                 JLabel vyhra = new JLabel("2. player win!");
-                                pocetdruhy++;
-                                win = new Win(vyhra, pocetprvy, pocetdruhy, farba);
+                                secondscore++;
+                                win = new Win(vyhra, firstscore, secondscore, farba);
                                 win.setVisible(true);
                             }
                         }
                     }
                 }
-                for (int i = 0; i <= pole.length - sp; i++) {
-                    for (int j = 0; j < pole[i].length; j++) {
-                        if (pole[i][j].getIcon() != icColor[9] && pole[i][j].getIcon() != icColor[2] && pole[i][j].getIcon() != icColor[6]
-                                && pole[i][j].getIcon() == pole[i + 1][j].getIcon()
-                                && pole[i][j].getIcon() == pole[i + 2][j].getIcon()
-                                && pole[i][j].getIcon() == pole[i + 3][j].getIcon()
-                                && pole[i][j].getIcon() == pole[i + 4][j].getIcon()
-                                && pole[i][j].getIcon() == pole[i + sp3][j].getIcon()) {
+                for (int i = 0; i <= field.length - TTT1; i++) {
+                    for (int j = 0; j < field[i].length; j++) {
+                        if (field[i][j].getIcon() != icColor[9] && field[i][j].getIcon() != icColor[2] && field[i][j].getIcon() != icColor[6]
+                                && field[i][j].getIcon() == field[i + 1][j].getIcon()
+                                && field[i][j].getIcon() == field[i + 2][j].getIcon()
+                                && field[i][j].getIcon() == field[i + 3][j].getIcon()
+                                && field[i][j].getIcon() == field[i + 4][j].getIcon()
+                                && field[i][j].getIcon() == field[i + TTT3][j].getIcon()) {
                             if (prvy) {
-                                for (int k = 0; k < sp; k++) {
-                                    pole[i + k][j].setIcon(icColor[6]);
+                                for (int k = 0; k < TTT1; k++) {
+                                    field[i + k][j].setIcon(icColor[6]);
                                 }
                                 JLabel vyhra = new JLabel("1. player win!");
-                                pocetprvy++;
-                                win = new Win(vyhra, pocetprvy, pocetdruhy, farba);
+                                firstscore++;
+                                win = new Win(vyhra, firstscore, secondscore, farba);
                                 win.setVisible(true);
                             } else {
-                                for (int k = 0; k < sp; k++) {
-                                    pole[i + k][j].setIcon(icColor[2]);
+                                for (int k = 0; k < TTT1; k++) {
+                                    field[i + k][j].setIcon(icColor[2]);
                                 }
                                 JLabel vyhra = new JLabel("2. player win!");
-                                pocetdruhy++;
-                                win = new Win(vyhra, pocetprvy, pocetdruhy, farba);
+                                secondscore++;
+                                win = new Win(vyhra, firstscore, secondscore, farba);
                                 win.setVisible(true);
                             }
                         }
                     }
                 }
-                for (int i = 0; i < pole.length; i++) {
-                    for (int j = 0; j <= pole[i].length - sp; j++) {
-                        if (pole[i][j].getIcon() != icColor[9] && pole[i][j].getIcon() != icColor[2] && pole[i][j].getIcon() != icColor[6]
-                                && pole[i][j].getIcon() == pole[i][j + 1].getIcon()
-                                && pole[i][j].getIcon() == pole[i][j + 2].getIcon()
-                                && pole[i][j].getIcon() == pole[i][j + 3].getIcon()
-                                && pole[i][j].getIcon() == pole[i][j + 4].getIcon()
-                                && pole[i][j].getIcon() == pole[i][j + sp3].getIcon()) {
+                for (int i = 0; i < field.length; i++) {
+                    for (int j = 0; j <= field[i].length - TTT1; j++) {
+                        if (field[i][j].getIcon() != icColor[9] && field[i][j].getIcon() != icColor[2] && field[i][j].getIcon() != icColor[6]
+                                && field[i][j].getIcon() == field[i][j + 1].getIcon()
+                                && field[i][j].getIcon() == field[i][j + 2].getIcon()
+                                && field[i][j].getIcon() == field[i][j + 3].getIcon()
+                                && field[i][j].getIcon() == field[i][j + 4].getIcon()
+                                && field[i][j].getIcon() == field[i][j + TTT3].getIcon()) {
                             if (prvy) {
-                                for (int k = 0; k < sp; k++) {
-                                    pole[i][j + k].setIcon(icColor[6]);
+                                for (int k = 0; k < TTT1; k++) {
+                                    field[i][j + k].setIcon(icColor[6]);
                                 }
                                 JLabel vyhra = new JLabel("1. player win!");
-                                pocetprvy++;
-                                win = new Win(vyhra, pocetprvy, pocetdruhy, farba);
+                                firstscore++;
+                                win = new Win(vyhra, firstscore, secondscore, farba);
                                 win.setVisible(true);
                             } else {
-                                for (int k = 0; k < sp; k++) {
-                                    pole[i][j + k].setIcon(icColor[2]);
+                                for (int k = 0; k < TTT1; k++) {
+                                    field[i][j + k].setIcon(icColor[2]);
                                 }
                                 JLabel vyhra = new JLabel("2. player win!");
-                                pocetdruhy++;
-                                win = new Win(vyhra, pocetprvy, pocetdruhy, farba);
+                                secondscore++;
+                                win = new Win(vyhra, firstscore, secondscore, farba);
                                 win.setVisible(true);
                             }
 
@@ -400,14 +414,24 @@ public class Field extends JPanel {
                 }
                 //////////////////
                 if (iconset1 == true) {
-                    pole[o][p].setIcon(icColor[2]);
+                    field[o][p].setIcon(icColor[2]);
                     iconset1 = false;
                 } else if (iconset2 == true) {
-                    pole[o][p].setIcon(icColor[6]);
+                    field[o][p].setIcon(icColor[6]);
                     iconset2 = false;
                 }
                 ///////////////////////
             }
+        }
+    }
+
+    public void GameOver() {
+
+        if (endgame == (width * height)) {
+            System.out.println("Game Over");
+            JLabel vyhra = new JLabel("Game Over:");
+            win = new Win(vyhra, firstscore, secondscore, farba);
+            win.setVisible(true);
         }
     }
 }

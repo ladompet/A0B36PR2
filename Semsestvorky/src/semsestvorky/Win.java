@@ -78,7 +78,7 @@ class Win extends JDialog implements ActionListener {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                mm.new NovaHra().actionPerformed(e);
+                mm.new NewGame().actionPerformed(e);
                 Win.this.dispose();
             }
         });
