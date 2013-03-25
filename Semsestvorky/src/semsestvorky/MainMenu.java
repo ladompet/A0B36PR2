@@ -79,7 +79,7 @@ public class MainMenu extends JFrame {
 //        this.setLayout(null);
 
         this.setResizable(false);
-        field = new Field(n, m, hra, farba, fx);
+        field = new Field(n, m, hra, farba, fx, true);
         this.add(field);
         this.setSize(x * (n + 1) - 29, x * (m + 1) + 43);
 
@@ -97,17 +97,16 @@ public class MainMenu extends JFrame {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            if (hra == true) {
-                MainMenu.super.setTitle("Connect6");
-            } else {
-                MainMenu.super.setTitle("Tic Tac Toe");
-            }
-            MainMenu.this.setVisible(false);
-            MainMenu.this.remove(field);
-            MainMenu.this.add(field = new Field(a, b, hra, farba, fx));
-            MainMenu.this.setSize(x * (a + 1) - 29, x * (b + 1) + 43);
-            MainMenu.this.setVisible(true);
-
+                if (hra) {
+                    MainMenu.super.setTitle("Connect6");
+                } else {
+                    MainMenu.super.setTitle("Tic Tac Toe");
+                }
+                MainMenu.this.setVisible(false);
+                MainMenu.this.remove(field);
+                MainMenu.this.add(field = new Field(a, b, hra, farba, fx, true));
+                MainMenu.this.setSize(x * (a + 1) - 29, x * (b + 1) + 43);
+                MainMenu.this.setVisible(true);
         }
     }
 

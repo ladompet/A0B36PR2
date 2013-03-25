@@ -75,7 +75,6 @@ class Win extends JDialog implements ActionListener {
         cancel.setBounds(30, 82, 100, 25);
 
         newGame.addActionListener(new ActionListener() {
-            JButton[][] pole;
 
             @Override
             public void actionPerformed(ActionEvent e) {

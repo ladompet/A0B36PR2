@@ -41,21 +41,13 @@ public class Field extends JPanel {
     boolean turn = true;
     Win win;
     JButton[][] pole;
-    ImageIcon ic1 = new ImageIcon();
-    ImageIcon ic2 = new ImageIcon();
-    ImageIcon ic3 = new ImageIcon();
-    ImageIcon ic4 = new ImageIcon();
-    ImageIcon ic5 = new ImageIcon();
-    ImageIcon ic6 = new ImageIcon();
-    ImageIcon ic7 = new ImageIcon();
-    ImageIcon ic8 = new ImageIcon();
-    ImageIcon icxs = new ImageIcon();
-    ImageIcon icos = new ImageIcon();
-    ImageIcon ichrac1 = new ImageIcon();
-    ImageIcon ichrac2 = new ImageIcon();
+    ImageIcon[] icColor = new ImageIcon[10];
+    ImageIcon[] icPlayer = new ImageIcon[2];
+    
+    
     JButton hracobr = new JButton();
 
-    Field(int n, int m, boolean c, int d, boolean fx) {
+    Field(int n, int m, boolean c, int d, boolean fx, boolean change) {
         effects = fx;
         hra = c;
         if (hra == true) {
@@ -70,66 +62,8 @@ public class Field extends JPanel {
             sp3 = 1;
             pocet = 1;
         }
-        farba = d;
-        if (farba == 0) {
-            ic1 = new ImageIcon("obrazky/blue/o1.jpg");
-            ic2 = new ImageIcon("obrazky/blue/o1s.jpg");
-            ic3 = new ImageIcon("obrazky/blue/o1w.jpg");
-            icos = new ImageIcon("obrazky/blue/o1s.jpg");
-            ic4 = new ImageIcon("obrazky/blue/x1.jpg");
-            ic5 = new ImageIcon("obrazky/blue/x1s.jpg");
-            ic6 = new ImageIcon("obrazky/blue/x1w.jpg");
-            icxs = new ImageIcon("obrazky/blue/x1s.jpg");
-            ic7 = new ImageIcon("obrazky/blue/stlacene.jpg");
-            ic8 = new ImageIcon("obrazky/blue/tlacidlo.jpg");
-        } else if (farba == 1) {
-            ic1 = new ImageIcon("obrazky/green/o1.jpg");
-            ic2 = new ImageIcon("obrazky/green/o1s.jpg");
-            ic3 = new ImageIcon("obrazky/green/o1w.jpg");
-            icos = new ImageIcon("obrazky/green/o1s.jpg");
-            ic4 = new ImageIcon("obrazky/green/x1.jpg");
-            ic5 = new ImageIcon("obrazky/green/x1s.jpg");
-            ic6 = new ImageIcon("obrazky/green/x1w.jpg");
-            icxs = new ImageIcon("obrazky/green/w1s.jpg");
-            ic7 = new ImageIcon("obrazky/green/stlacene.jpg");
-            ic8 = new ImageIcon("obrazky/green/tlacidlo.jpg");
-        } else if (farba == 2) {
-            ic1 = new ImageIcon("obrazky/grey/o1.jpg");
-            ic2 = new ImageIcon("obrazky/grey/o1s.jpg");
-            ic3 = new ImageIcon("obrazky/grey/o1w.jpg");
-            icos = new ImageIcon("obrazky/grey/o1s.jpg");
-            ic4 = new ImageIcon("obrazky/grey/x1.jpg");
-            ic5 = new ImageIcon("obrazky/grey/x1s.jpg");
-            ic6 = new ImageIcon("obrazky/grey/x1w.jpg");
-            icxs = new ImageIcon("obrazky/grey/x1s.jpg");
-            ic7 = new ImageIcon("obrazky/grey/stlacene.jpg");
-            ic8 = new ImageIcon("obrazky/grey/tlacidlo.jpg");
-        } else if (farba == 3) {
-            ic1 = new ImageIcon("obrazky/yellow/o1.jpg");
-            ic2 = new ImageIcon("obrazky/yellow/o1s.jpg");
-            ic3 = new ImageIcon("obrazky/yellow/o1w.jpg");
-            icos = new ImageIcon("obrazky/yellow/o1s.jpg");
-            ic4 = new ImageIcon("obrazky/yellow/x1.jpg");
-            ic5 = new ImageIcon("obrazky/yellow/x1s.jpg");
-            ic6 = new ImageIcon("obrazky/yellow/x1w.jpg");
-            icxs = new ImageIcon("obrazky/yellow/x1s.jpg");
-            ic7 = new ImageIcon("obrazky/yellow/stlacene.jpg");
-            ic8 = new ImageIcon("obrazky/yellow/tlacidlo.jpg");
-        }
-        if (farba == 0) {
-            ichrac1 = new ImageIcon("obrazky/blue/xturn.jpg");
-            ichrac2 = new ImageIcon("obrazky/blue/oturn.jpg");
-        } else if (farba == 1) {
-            ichrac1 = new ImageIcon("obrazky/green/xturn.jpg");
-            ichrac2 = new ImageIcon("obrazky/green/oturn.jpg");
-        } else if (farba == 2) {
-            ichrac1 = new ImageIcon("obrazky/grey/xturn.jpg");
-            ichrac2 = new ImageIcon("obrazky/grey/oturn.jpg");
-        } else if (farba == 3) {
-            ichrac1 = new ImageIcon("obrazky/yellow/xturn.jpg");
-            ichrac2 = new ImageIcon("obrazky/yellow/oturn.jpg");
-        }
 
+        color(d);
         JLabel hrac = new JLabel("TURN :");
         Panel p = new Panel();
         p.setBounds(0, x * m, x * n * 2, 50);
@@ -141,7 +75,7 @@ public class Field extends JPanel {
         this.add(hrac);
 
         p.add(hracobr);
-        hracobr.setIcon(ichrac1);
+        hracobr.setIcon(icPlayer[1]);
         hracobr.setBounds(((x * n) / 2) + 12, x * m, 26, 26);
         this.add(hracobr);
 
@@ -149,16 +83,87 @@ public class Field extends JPanel {
         this.setBackground(Color.GRAY);
         this.setLayout(null);
 
-        pole = new JButton[n][m];
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < m; j++) {
-                pole[i][j] = new JButton(ic8);
-                pole[i][j].addMouseListener(new MouseL(i, j));
-                int x = 35;
-                pole[i][j].setBounds(x * i, x * j, x, x);
-                this.add(pole[i][j]);
+        if (change) {
+            pole = new JButton[n][m];
+            for (int i = 0; i < n; i++) {
+                for (int j = 0; j < m; j++) {
+                    pole[i][j] = new JButton(icColor[9]);
+                    pole[i][j].addMouseListener(new MouseL(i, j));
+                    int x = 35;
+                    pole[i][j].setBounds(x * i, x * j, x, x);
+                    this.add(pole[i][j]);
+                }
+            }
+        } else {
+            for (int i = 0; i < n; i++) {
+                for (int j = 0; j < m; j++) {
+                    color(d);
+                }
             }
         }
+    }
+
+    public void color(int farba) {
+        this.farba = farba;
+        if (farba == 0) {
+            icColor[0] = new ImageIcon("obrazky/blue/o1.jpg");
+            icColor[1] = new ImageIcon("obrazky/blue/o1s.jpg");
+            icColor[2] = new ImageIcon("obrazky/blue/o1w.jpg");
+            icColor[3] = new ImageIcon("obrazky/blue/o1s.jpg");
+            icColor[4] = new ImageIcon("obrazky/blue/x1.jpg");
+            icColor[5] = new ImageIcon("obrazky/blue/x1s.jpg");
+            icColor[6] = new ImageIcon("obrazky/blue/x1w.jpg");
+            icColor[7] = new ImageIcon("obrazky/blue/x1s.jpg");
+            icColor[8] = new ImageIcon("obrazky/blue/stlacene.jpg");
+            icColor[9] = new ImageIcon("obrazky/blue/tlacidlo.jpg");
+        } else if (farba == 1) {
+            icColor[0] = new ImageIcon("obrazky/green/o1.jpg");
+            icColor[1] = new ImageIcon("obrazky/green/o1s.jpg");
+            icColor[2] = new ImageIcon("obrazky/green/o1w.jpg");
+            icColor[3] = new ImageIcon("obrazky/green/o1s.jpg");
+            icColor[4] = new ImageIcon("obrazky/green/x1.jpg");
+            icColor[5] = new ImageIcon("obrazky/green/x1s.jpg");
+            icColor[6] = new ImageIcon("obrazky/green/x1w.jpg");
+            icColor[7] = new ImageIcon("obrazky/green/w1s.jpg");
+            icColor[8] = new ImageIcon("obrazky/green/stlacene.jpg");
+            icColor[9] = new ImageIcon("obrazky/green/tlacidlo.jpg");
+        }else if (farba == 2) {
+            icColor[0] = new ImageIcon("obrazky/grey/o1.jpg");
+            icColor[1] = new ImageIcon("obrazky/grey/o1s.jpg");
+            icColor[2] = new ImageIcon("obrazky/grey/o1w.jpg");
+            icColor[3] = new ImageIcon("obrazky/grey/o1s.jpg");
+            icColor[4] = new ImageIcon("obrazky/grey/x1.jpg");
+            icColor[5] = new ImageIcon("obrazky/grey/x1s.jpg");
+            icColor[6] = new ImageIcon("obrazky/grey/x1w.jpg");
+            icColor[7] = new ImageIcon("obrazky/grey/x1s.jpg");
+            icColor[8] = new ImageIcon("obrazky/grey/stlacene.jpg");
+            icColor[9] = new ImageIcon("obrazky/grey/tlacidlo.jpg");
+        } else if (farba == 3) {
+            icColor[0] = new ImageIcon("obrazky/yellow/o1.jpg");
+            icColor[1] = new ImageIcon("obrazky/yellow/o1s.jpg");
+            icColor[2] = new ImageIcon("obrazky/yellow/o1w.jpg");
+            icColor[3] = new ImageIcon("obrazky/yellow/o1s.jpg");
+            icColor[4] = new ImageIcon("obrazky/yellow/x1.jpg");
+            icColor[5] = new ImageIcon("obrazky/yellow/x1s.jpg");
+            icColor[6] = new ImageIcon("obrazky/yellow/x1w.jpg");
+            icColor[7] = new ImageIcon("obrazky/yellow/x1s.jpg");
+            icColor[8] = new ImageIcon("obrazky/yellow/stlacene.jpg");
+            icColor[9] = new ImageIcon("obrazky/yellow/tlacidlo.jpg");
+        }
+        if (farba == 0) {
+            icPlayer[0] = new ImageIcon("obrazky/blue/xturn.jpg");
+            icPlayer[1] = new ImageIcon("obrazky/blue/oturn.jpg");
+        } else if (farba == 1) {
+            icPlayer[0] = new ImageIcon("obrazky/green/xturn.jpg");
+            icPlayer[1] = new ImageIcon("obrazky/green/oturn.jpg");
+        }else if (farba == 2) {
+            icPlayer[0] = new ImageIcon("obrazky/grey/xturn.jpg");
+            icPlayer[1] = new ImageIcon("obrazky/grey/oturn.jpg");
+        } else if (farba == 3) {
+            icPlayer[0] = new ImageIcon("obrazky/yellow/xturn.jpg");
+            icPlayer[1] = new ImageIcon("obrazky/yellow/oturn.jpg");
+        }
+
     }
 
     class MouseL extends MouseAdapter {
@@ -186,7 +191,7 @@ public class Field extends JPanel {
                 }
             }
 
-            if (pole[x][y].getIcon() == ic8) {
+            if (pole[x][y].getIcon() == icColor[9]) {
                 ii++;
                 t++;
                 if (pocet == 2) {
@@ -220,16 +225,16 @@ public class Field extends JPanel {
 
                 }
             }
-            if (pole[x][y].getIcon() == ic4) {
-                pole[x][y].setIcon(ic5);
-            } else if (pole[x][y].getIcon() == ic1) {
-                pole[x][y].setIcon(ic2);
-            } else if (pole[x][y].getIcon() == ic6) {
-                pole[x][y].setIcon(icxs);
-            } else if (pole[x][y].getIcon() == ic3) {
-                pole[x][y].setIcon(icos);
+            if (pole[x][y].getIcon() == icColor[4]) {
+                pole[x][y].setIcon(icColor[5]);
+            } else if (pole[x][y].getIcon() == icColor[0]) {
+                pole[x][y].setIcon(icColor[1]);
+            } else if (pole[x][y].getIcon() == icColor[6]) {
+                pole[x][y].setIcon(icColor[7]);
+            } else if (pole[x][y].getIcon() == icColor[2]) {
+                pole[x][y].setIcon(icColor[3]);
             } else {
-                pole[x][y].setIcon(ic7);
+                pole[x][y].setIcon(icColor[8]);
             }
         }
 
@@ -237,24 +242,24 @@ public class Field extends JPanel {
         public void mouseReleased(MouseEvent me) {
 
             if (turn == true) {
-                hracobr.setIcon(ichrac1);
+                hracobr.setIcon(icPlayer[0]);
             } else if (turn == false) {
-                hracobr.setIcon(ichrac2);
+                hracobr.setIcon(icPlayer[1]);
             }
-            if (pole[x][y].getIcon() == ic7) {
+            if (pole[x][y].getIcon() == icColor[8]) {
                 if (prvy) {
-                    pole[x][y].setIcon(ic4);
+                    pole[x][y].setIcon(icColor[4]);
                 } else {
-                    pole[x][y].setIcon(ic1);
+                    pole[x][y].setIcon(icColor[0]);
                 }
-            } else if (pole[x][y].getIcon() == ic2) {
-                pole[x][y].setIcon(ic1);
-            } else if (pole[x][y].getIcon() == ic5) {
-                pole[x][y].setIcon(ic4);
-            } else if (pole[x][y].getIcon() == icos) {
-                pole[x][y].setIcon(ic3);
-            } else if (pole[x][y].getIcon() == icxs) {
-                pole[x][y].setIcon(ic6);
+            } else if (pole[x][y].getIcon() == icColor[1]) {
+                pole[x][y].setIcon(icColor[0]);
+            } else if (pole[x][y].getIcon() == icColor[5]) {
+                pole[x][y].setIcon(icColor[4]);
+            } else if (pole[x][y].getIcon() == icColor[3]) {
+                pole[x][y].setIcon(icColor[2]);
+            } else if (pole[x][y].getIcon() == icColor[7]) {
+                pole[x][y].setIcon(icColor[6]);
             }
             vyhra();
         }
@@ -272,17 +277,17 @@ public class Field extends JPanel {
     public void vyhra() {
         for (int o = 0; o < pole.length; o++) {
             for (int p = 0; p < pole.length; p++) {
-                if (pole[o][p].getIcon() == ic3) {
-                    pole[o][p].setIcon(ic1);
+                if (pole[o][p].getIcon() == icColor[2]) {
+                    pole[o][p].setIcon(icColor[0]);
                     iconset1 = true;
-                }else if (pole[o][p].getIcon() == ic6) {
-                    pole[o][p].setIcon(ic4);
+                } else if (pole[o][p].getIcon() == icColor[6]) {
+                    pole[o][p].setIcon(icColor[4]);
                     iconset2 = true;
                 }
 
                 for (int i = 0; i <= pole.length - sp; i++) {
                     for (int j = 0; j <= pole[i].length - sp; j++) {
-                        if (pole[i][j].getIcon() != ic8 && pole[i][j].getIcon() != ic3 && pole[i][j].getIcon() != ic6
+                        if (pole[i][j].getIcon() != icColor[9] && pole[i][j].getIcon() != icColor[2] && pole[i][j].getIcon() != icColor[6]
                                 && pole[i][j].getIcon() == pole[i + 1][j + 1].getIcon()
                                 && pole[i][j].getIcon() == pole[i + 2][j + 2].getIcon()
                                 && pole[i][j].getIcon() == pole[i + 3][j + 3].getIcon()
@@ -290,7 +295,7 @@ public class Field extends JPanel {
                                 && pole[i][j].getIcon() == pole[i + sp3][j + sp3].getIcon()) {
                             if (prvy) {
                                 for (int k = 0; k < sp; k++) {
-                                    pole[i + k][j + k].setIcon(ic6);
+                                    pole[i + k][j + k].setIcon(icColor[6]);
                                 }
                                 JLabel vyhra = new JLabel("1. player win!");
                                 pocetprvy++;
@@ -298,7 +303,7 @@ public class Field extends JPanel {
                                 win.setVisible(true);
                             } else {
                                 for (int k = 0; k < sp; k++) {
-                                    pole[i + k][j + k].setIcon(ic3);
+                                    pole[i + k][j + k].setIcon(icColor[2]);
                                 }
                                 JLabel vyhra = new JLabel("2. player win!");
                                 pocetdruhy++;
@@ -310,7 +315,7 @@ public class Field extends JPanel {
                 }
                 for (int i = pole.length - 1; i > sp2; i--) {
                     for (int j = 0; j <= pole[i].length - sp; j++) {
-                        if (pole[i][j].getIcon() != ic8 && pole[i][j].getIcon() != ic3 && pole[i][j].getIcon() != ic6
+                        if (pole[i][j].getIcon() != icColor[9] && pole[i][j].getIcon() != icColor[2] && pole[i][j].getIcon() != icColor[6]
                                 && pole[i][j].getIcon() == pole[i - 1][j + 1].getIcon()
                                 && pole[i][j].getIcon() == pole[i - 2][j + 2].getIcon()
                                 && pole[i][j].getIcon() == pole[i - 3][j + 3].getIcon()
@@ -318,7 +323,7 @@ public class Field extends JPanel {
                                 && pole[i][j].getIcon() == pole[i - sp3][j + sp3].getIcon()) {
                             if (prvy) {
                                 for (int k = 0; k < sp; k++) {
-                                    pole[i - k][j + k].setIcon(ic6);
+                                    pole[i - k][j + k].setIcon(icColor[6]);
                                 }
                                 JLabel vyhra = new JLabel("1. player win!");
                                 pocetprvy++;
@@ -326,7 +331,7 @@ public class Field extends JPanel {
                                 win.setVisible(true);
                             } else {
                                 for (int k = 0; k < sp; k++) {
-                                    pole[i - k][j + k].setIcon(ic3);
+                                    pole[i - k][j + k].setIcon(icColor[3]);
                                 }
                                 JLabel vyhra = new JLabel("2. player win!");
                                 pocetdruhy++;
@@ -338,7 +343,7 @@ public class Field extends JPanel {
                 }
                 for (int i = 0; i <= pole.length - sp; i++) {
                     for (int j = 0; j < pole[i].length; j++) {
-                        if (pole[i][j].getIcon() != ic8 && pole[i][j].getIcon() != ic3 && pole[i][j].getIcon() != ic6
+                        if (pole[i][j].getIcon() != icColor[9] && pole[i][j].getIcon() != icColor[2] && pole[i][j].getIcon() != icColor[6]
                                 && pole[i][j].getIcon() == pole[i + 1][j].getIcon()
                                 && pole[i][j].getIcon() == pole[i + 2][j].getIcon()
                                 && pole[i][j].getIcon() == pole[i + 3][j].getIcon()
@@ -346,7 +351,7 @@ public class Field extends JPanel {
                                 && pole[i][j].getIcon() == pole[i + sp3][j].getIcon()) {
                             if (prvy) {
                                 for (int k = 0; k < sp; k++) {
-                                    pole[i + k][j].setIcon(ic6);
+                                    pole[i + k][j].setIcon(icColor[6]);
                                 }
                                 JLabel vyhra = new JLabel("1. player win!");
                                 pocetprvy++;
@@ -354,7 +359,7 @@ public class Field extends JPanel {
                                 win.setVisible(true);
                             } else {
                                 for (int k = 0; k < sp; k++) {
-                                    pole[i + k][j].setIcon(ic3);
+                                    pole[i + k][j].setIcon(icColor[2]);
                                 }
                                 JLabel vyhra = new JLabel("2. player win!");
                                 pocetdruhy++;
@@ -366,7 +371,7 @@ public class Field extends JPanel {
                 }
                 for (int i = 0; i < pole.length; i++) {
                     for (int j = 0; j <= pole[i].length - sp; j++) {
-                        if (pole[i][j].getIcon() != ic8 && pole[i][j].getIcon() != ic3 && pole[i][j].getIcon() != ic6
+                        if (pole[i][j].getIcon() != icColor[9] && pole[i][j].getIcon() != icColor[2] && pole[i][j].getIcon() != icColor[6]
                                 && pole[i][j].getIcon() == pole[i][j + 1].getIcon()
                                 && pole[i][j].getIcon() == pole[i][j + 2].getIcon()
                                 && pole[i][j].getIcon() == pole[i][j + 3].getIcon()
@@ -374,7 +379,7 @@ public class Field extends JPanel {
                                 && pole[i][j].getIcon() == pole[i][j + sp3].getIcon()) {
                             if (prvy) {
                                 for (int k = 0; k < sp; k++) {
-                                    pole[i][j + k].setIcon(ic6);
+                                    pole[i][j + k].setIcon(icColor[6]);
                                 }
                                 JLabel vyhra = new JLabel("1. player win!");
                                 pocetprvy++;
@@ -382,7 +387,7 @@ public class Field extends JPanel {
                                 win.setVisible(true);
                             } else {
                                 for (int k = 0; k < sp; k++) {
-                                    pole[i][j + k].setIcon(ic3);
+                                    pole[i][j + k].setIcon(icColor[2]);
                                 }
                                 JLabel vyhra = new JLabel("2. player win!");
                                 pocetdruhy++;
@@ -395,11 +400,11 @@ public class Field extends JPanel {
                 }
                 //////////////////
                 if (iconset1 == true) {
-                    pole[o][p].setIcon(ic3);
+                    pole[o][p].setIcon(icColor[2]);
                     iconset1 = false;
-                }else if (iconset2 == true) {
-                    pole[o][p].setIcon(ic6);
-                    iconset2=false;
+                } else if (iconset2 == true) {
+                    pole[o][p].setIcon(icColor[6]);
+                    iconset2 = false;
                 }
                 ///////////////////////
             }
