@@ -24,10 +24,12 @@ class Closer extends WindowAdapter {
 public class MainMenu extends JFrame {
 
     boolean hra = true;
+    boolean fx = true;
     int farba = 0;
     boolean far0 = true;
     boolean far1 = false;
     boolean far2 = false;
+    boolean far3 = false;
     public static int m = 10;
     public static int n = 10;
     public static int a = 10;
@@ -54,7 +56,7 @@ public class MainMenu extends JFrame {
 
         menu.add(file);
         menu.add(help);
-       
+
         JMenuItem newGame = new JMenuItem("New Game    ");
         JMenuItem settings = new JMenuItem("Settings");
         JMenuItem exit = new JMenuItem("Exit");
@@ -77,9 +79,9 @@ public class MainMenu extends JFrame {
 //        this.setLayout(null);
 
         this.setResizable(false);
-        field = new Field(n, m, hra, farba);
+        field = new Field(n, m, hra, farba, fx);
         this.add(field);
-        this.setSize(x * (n + 1) - 29, x * (m + 1) + 53);
+        this.setSize(x * (n + 1) - 29, x * (m + 1) + 43);
 
     }
 
@@ -102,8 +104,8 @@ public class MainMenu extends JFrame {
             }
             MainMenu.this.setVisible(false);
             MainMenu.this.remove(field);
-            MainMenu.this.add(field = new Field(a, b, hra, farba));
-            MainMenu.this.setSize(x * (a + 1) - 29, x * (b + 1) + 53);
+            MainMenu.this.add(field = new Field(a, b, hra, farba, fx));
+            MainMenu.this.setSize(x * (a + 1) - 29, x * (b + 1) + 43);
             MainMenu.this.setVisible(true);
 
         }
@@ -113,7 +115,7 @@ public class MainMenu extends JFrame {
 
         JTextField width, height;
         JLabel w1, h1, max, size, game, color;
-        JCheckBox c6, ttt, blue, green, grey;
+        JCheckBox c6, ttt, blue, green, grey, yellow, soundfx;
         ButtonGroup CB1, CB2;
         JButton ok, cancel;
         int m, n;
@@ -128,7 +130,7 @@ public class MainMenu extends JFrame {
             this.setTitle("Settings");
             this.setLayout(null);
             this.setLocation(550, 200);
-            this.setSize(280, 240);
+            this.setSize(280, 260);
             this.setResizable(false);
             this.setModal(true);
             CB1 = new ButtonGroup();
@@ -157,12 +159,17 @@ public class MainMenu extends JFrame {
             green.setFont(new Font("Arial", Font.ITALIC, 12));
             grey = new JCheckBox("Grey", far2);
             grey.setFont(new Font("Arial", Font.ITALIC, 12));
+            yellow = new JCheckBox("Yellow", far3);
+            yellow.setFont(new Font("Arial", Font.ITALIC, 12));
+            soundfx = new JCheckBox("Sound FX", fx);
+            soundfx.setFont(new Font("Arial", Font.ITALIC, 12));
 
             CB1.add(c6);
             CB1.add(ttt);
             CB2.add(blue);
             CB2.add(green);
             CB2.add(grey);
+            CB2.add(yellow);
 
             cancel = new JButton("Cancel");
             ok = new JButton("OK");
@@ -190,11 +197,15 @@ public class MainMenu extends JFrame {
             this.add(ttt);
             ttt.setBounds(140, 95, 100, 20);
             this.add(blue);
-            blue.setBounds(30, 140, 70, 20);
+            blue.setBounds(15, 140, 60, 20);
             this.add(green);
-            green.setBounds(110, 140, 70, 20);
+            green.setBounds(75, 140, 60, 20);
             this.add(grey);
-            grey.setBounds(190, 140, 70, 20);
+            grey.setBounds(135, 140, 60, 20);
+            this.add(yellow);
+            yellow.setBounds(195, 140, 70, 20);
+            this.add(soundfx);
+            soundfx.setBounds(100, 165, 100, 20);
 
             width.setEditable(true);
             height.setEditable(true);
@@ -202,9 +213,9 @@ public class MainMenu extends JFrame {
             height.setText("10");
 
             this.add(ok);
-            ok.setBounds(157, 175, 75, 25);
+            ok.setBounds(157, 190, 75, 25);
             this.add(cancel);
-            cancel.setBounds(47, 175, 75, 25);
+            cancel.setBounds(47, 190, 75, 25);
 
             ok.addActionListener(new ActionListener() {
                 @Override
@@ -245,6 +256,8 @@ public class MainMenu extends JFrame {
             blue.addItemListener(this);
             green.addItemListener(this);
             grey.addItemListener(this);
+            yellow.addItemListener(this);
+            soundfx.addItemListener(this);
         }
 
         @Override
@@ -264,16 +277,30 @@ public class MainMenu extends JFrame {
                 far0 = true;
                 far1 = false;
                 far2 = false;
+                far3 = false;
             } else if (green.isSelected()) {
                 farba = 1;
                 far0 = false;
                 far1 = true;
                 far2 = false;
+                far3 = false;
             } else if (grey.isSelected()) {
                 farba = 2;
                 far0 = false;
                 far1 = false;
                 far2 = true;
+                far3 = false;
+            } else if (yellow.isSelected()) {
+                farba = 3;
+                far0 = false;
+                far1 = false;
+                far2 = false;
+                far3 = true;
+            }
+            if (soundfx.isSelected()) {
+                fx = true;
+            } else if (!soundfx.isSelected()) {
+                fx = false;
             }
         }
     }

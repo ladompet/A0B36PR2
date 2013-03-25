@@ -8,7 +8,6 @@ package semsestvorky;
  *
  * @author Piotr04_SVK
  */
-import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -33,7 +32,7 @@ class Win extends JDialog implements ActionListener {
         this.setLocation(550, 200);
         this.setSize(290, 150);
         this.setResizable(false);
-        //this.setModal(true);
+        this.setModal(true);
         if (farba == 0) {
             icx = new ImageIcon("obrazky/blue/x1.jpg");
             ico = new ImageIcon("obrazky/blue/o1.jpg");
@@ -66,7 +65,7 @@ class Win extends JDialog implements ActionListener {
         obr2.setBounds(190, 35, 35, 35);
 
         cancel = new JButton("Continue");
-        newGame = new JButton("Clear Field");
+        newGame = new JButton("New Game");
         this.add(newGame);
         newGame.setBounds(160, 82, 100, 25);
         this.add(cancel);
