@@ -24,7 +24,7 @@ import static MyWorkConnect6.MainMenu.x;
 public class Field extends JPanel implements ItemListener {
 
     boolean effects = true;
-    int farba;
+    int color;
     int endgame = 0;
     int numberTurn;     // coneect6 vs tic tac toe turn
     int firstscore = 0;
@@ -116,7 +116,7 @@ public class Field extends JPanel implements ItemListener {
         }
 
     public void color(int farba) {
-        this.farba = farba;
+        this.color = farba;
         if (farba == 0) {
             icColor[0] = new ImageIcon("obrazky/blue/o1.jpg");
             icColor[1] = new ImageIcon("obrazky/blue/o1s.jpg");
@@ -181,7 +181,6 @@ public class Field extends JPanel implements ItemListener {
     class MouseL extends MouseAdapter {
 
         int x, y;
-        Clip clip;
 
         MouseL(int x, int y) {
             this.x = x;
@@ -194,7 +193,7 @@ public class Field extends JPanel implements ItemListener {
 //        }
         @Override
         public void mousePressed(MouseEvent me) {
-            if (effects == true) {
+            if (effects) {
                 try {
                     Clip clip = AudioSystem.getClip();
                     clip.open(AudioSystem.getAudioInputStream(new File("sounds/clickx.wav")));
@@ -313,7 +312,7 @@ public class Field extends JPanel implements ItemListener {
                                 }
                                 JLabel vyhra = new JLabel("1. player scores!");
                                 firstscore++;
-                                win = new Win(vyhra, firstscore, secondscore, farba);
+                                win = new Win(vyhra, firstscore, secondscore, color);
                                 win.setVisible(true);
                             } else {
                                 for (int k = 0; k < TTT1; k++) {
@@ -321,7 +320,7 @@ public class Field extends JPanel implements ItemListener {
                                 }
                                 JLabel vyhra = new JLabel("2. player scores!");
                                 secondscore++;
-                                win = new Win(vyhra, firstscore, secondscore, farba);
+                                win = new Win(vyhra, firstscore, secondscore, color);
                                 win.setVisible(true);
                             }
                         }
@@ -341,7 +340,7 @@ public class Field extends JPanel implements ItemListener {
                                 }
                                 JLabel vyhra = new JLabel("1. player scores!");
                                 firstscore++;
-                                win = new Win(vyhra, firstscore, secondscore, farba);
+                                win = new Win(vyhra, firstscore, secondscore, color);
                                 win.setVisible(true);
                             } else {
                                 for (int k = 0; k < TTT1; k++) {
@@ -349,7 +348,7 @@ public class Field extends JPanel implements ItemListener {
                                 }
                                 JLabel vyhra = new JLabel("2. player scores!");
                                 secondscore++;
-                                win = new Win(vyhra, firstscore, secondscore, farba);
+                                win = new Win(vyhra, firstscore, secondscore, color);
                                 win.setVisible(true);
                             }
                         }
@@ -369,7 +368,7 @@ public class Field extends JPanel implements ItemListener {
                                 }
                                 JLabel vyhra = new JLabel("1. player scores!");
                                 firstscore++;
-                                win = new Win(vyhra, firstscore, secondscore, farba);
+                                win = new Win(vyhra, firstscore, secondscore, color);
                                 win.setVisible(true);
                             } else {
                                 for (int k = 0; k < TTT1; k++) {
@@ -377,7 +376,7 @@ public class Field extends JPanel implements ItemListener {
                                 }
                                 JLabel vyhra = new JLabel("2. player scores!");
                                 secondscore++;
-                                win = new Win(vyhra, firstscore, secondscore, farba);
+                                win = new Win(vyhra, firstscore, secondscore, color);
                                 win.setVisible(true);
                             }
                         }
@@ -397,7 +396,7 @@ public class Field extends JPanel implements ItemListener {
                                 }
                                 JLabel vyhra = new JLabel("1. player scores!");
                                 firstscore++;
-                                win = new Win(vyhra, firstscore, secondscore, farba);
+                                win = new Win(vyhra, firstscore, secondscore, color);
                                 win.setVisible(true);
                             } else {
                                 for (int k = 0; k < TTT1; k++) {
@@ -405,7 +404,7 @@ public class Field extends JPanel implements ItemListener {
                                 }
                                 JLabel vyhra = new JLabel("2. player scores!");
                                 secondscore++;
-                                win = new Win(vyhra, firstscore, secondscore, farba);
+                                win = new Win(vyhra, firstscore, secondscore, color);
                                 win.setVisible(true);
                             }
 
@@ -428,8 +427,8 @@ public class Field extends JPanel implements ItemListener {
     public void GameOver() {
 
         if (endgame == (width * height)) {
-            JLabel vyhra = new JLabel("Game Over:");
-            win = new Win(vyhra, firstscore, secondscore, farba);
+            JLabel vyhra = new JLabel("    Game Over:");
+            win = new Win(vyhra, firstscore, secondscore, color);
             win.setVisible(true);
         }
     }

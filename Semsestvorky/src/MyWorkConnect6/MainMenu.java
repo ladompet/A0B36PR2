@@ -41,12 +41,8 @@ public class MainMenu extends JFrame {
         super.setTitle("Connect6");
         this.setLocation(350, 0);
         this.setBackground(Color.DARK_GRAY);
-        addWindowListener(new WindowAdapter() {
-            @Override
-            public void windowClosing(WindowEvent e) {
-                System.exit(0);
-            }
-        });
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+      
         JMenuBar menu = new JMenuBar();
         this.setJMenuBar(menu);
         JMenu file = new JMenu("File", false);
@@ -111,7 +107,7 @@ public class MainMenu extends JFrame {
     class Settings extends JDialog implements ActionListener, ItemListener {
 
         JTextField width, height;
-        JLabel w1, h1, max, size, game, color;
+        JLabel w1, h1, maxc6, maxttt, size, game, color;
         JCheckBox c6, ttt, blue, green, grey, yellow;
         ButtonGroup CB1, CB2;
         JButton ok, cancel;
@@ -137,8 +133,11 @@ public class MainMenu extends JFrame {
             w1.setFont(new Font("Arial", Font.ITALIC, 12));
             h1 = new JLabel("Height");
             h1.setFont(new Font("Arial", Font.ITALIC, 12));
-            max = new JLabel("(6-19)");
-            max.setFont(new Font("Arial", Font.ITALIC, 12));
+            maxc6 = new JLabel("(6-19) Connect 6");
+            maxc6.setFont(new Font("Arial", Font.ITALIC, 10));
+            maxttt = new JLabel("(5-19) Tic Tac Toe");
+            maxttt.setFont(new Font("Arial", Font.ITALIC, 10));
+
             size = new JLabel("Size of Field:");
             game = new JLabel("Game Mod:");
             color = new JLabel("Select a color:");
@@ -170,11 +169,13 @@ public class MainMenu extends JFrame {
             ok = new JButton("OK");
 
             this.add(w1);
-            w1.setBounds(72, 27, 50, 20);
+            w1.setBounds(42, 27, 50, 20);
             this.add(h1);
-            h1.setBounds(151, 27, 50, 20);
-            this.add(max);
-            max.setBounds(202, 45, 50, 20);
+            h1.setBounds(121, 27, 50, 20);
+            this.add(maxc6);
+            maxc6.setBounds(172, 55, 100, 20);
+            this.add(maxttt);
+            maxttt.setBounds(172, 35, 100, 20);
             this.add(size);
             size.setBounds(98, 10, 100, 20);
             this.add(game);
@@ -183,9 +184,9 @@ public class MainMenu extends JFrame {
             color.setBounds(95, 120, 100, 20);
 
             this.add(width);
-            width.setBounds(65, 48, 50, 20);
+            width.setBounds(35, 48, 50, 20);
             this.add(height);
-            height.setBounds(145, 48, 50, 20);
+            height.setBounds(115, 48, 50, 20);
 
             this.add(c6);
             c6.setBounds(40, 95, 100, 20);
@@ -219,14 +220,26 @@ public class MainMenu extends JFrame {
                         dispose();
                     } catch (Exception any) {
                     }
-                    if (n < 6) {
-                        n = 6;
+                    if (!hra) {
+                        if (n < 5) {
+                            n = 5;
+                        }
+                    } else {
+                        if (n < 6) {
+                            n = 6;
+                        }
                     }
                     if (n > 19) {
                         n = 19;
                     }
-                    if (m < 6) {
-                        m = 6;
+                    if (!hra) {
+                        if (m < 5) {
+                            m = 5;
+                        }
+                    } else {
+                        if (m < 6) {
+                            m = 6;
+                        }
                     }
                     if (m > 19) {
                         m = 19;
